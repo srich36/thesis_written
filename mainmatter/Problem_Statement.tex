@@ -5,6 +5,178 @@
 \chapter{Problem Statement}
 
 \section{Problem Definition}
+
+This thesis analyzes the optimal finite thrust transfer between two circular orbits. A PSO approach is utlized to attempt
+to find and optimal solution. The development of this problem is derived from \citep{Pontani_Conway}. \newline
+
+This transfer is developed with respect to an initial circular orbit of radius $R_1$ and a final circular orbit of radius $R_2$ subject to the conditions $R_1 > R_2$ where the parameter $\beta = R_2/R_1 > 1$. 
+The inertial reference frame selected for this problem definition is centered at the attracting body. The corresponding coordinate frame definition is as follows: The $x$ axis is aligned with the spacecraft at the initial time $t_0$ and the $y$ axis is located in the orbital plane.
+The $z$ axis is determined by the right hand rule of these two basis axis. Within this problem $v_r$ denotes the spacecraft radial velocity, $v_\theta$ the spacecraft the horizontal component of velocity, $r$ the radisu, and $\zeta$ the angular displacement from the $x$ axis. The gravitational
+parameter of the attracting body is $\mu_B$. \newline
+
+\noindent Initial conditions at time $t_0$ are given by
+\begin{equation}
+v_r(t_0) = 0  \quad  v_\theta(t_0) = \sqrt{\mu_B/R_1} \quad r(t_0) = R_1 \quad \xi(t_0) = 0
+\label{initial_conditions}
+\end{equation}
+
+\noindent And final conditions given by
+\begin{equation}
+    v_r(t_f) = 0 \quad v_\theta(t_f) = \sqrt{\mu_B/R_2} \quad r(t_f) = R_2
+    \label{final_conditions}
+\end{equation}
+
+The problem assumes a transfer trajectory of an initial thrust arc, followed by a coasting arc, and ending with a second thrust arc. 
+Optimization of this problem corresponds to determining the thrust pointing angle function corresponding to the minimization of propellant consumption 
+subject to the constraints of equation \ref{final_conditions}.\newline
+
+\noindent Additional assumptions are made to simplify the analysis:
+
+\begin{enumerate}
+    \item Throughout the duration of each thrust arc maximum thrust is generated
+    \item Each thrust arc pointing angle is represented as a third-degree polynomial as a function of time.
+\end{enumerate}
+
+$T$ and $c$ are used to represent the spacecraft thrust level and effective exhaust velocity respectively. The previous assumptions
+indicate that the thrust-to-mass ratio has the following form
+
+\begin{equation}
+\dfrac{T}{m} = \begin{cases} 
+    \dfrac{T}{m_0-\frac{T}{c}t} = \dfrac{cn_0}{c-n_0t} & 0\leq t \leq t_1 \\
+    0 & t_1\leq t \leq t_2 \\
+    \dfrac{T}{m_0-\frac{T}{c}(t_1+t-t_2)} = \dfrac{cn_0}{c-n_0(t_1+t-t_2)} & t_2\leq t \leq t_f 
+  \end{cases}
+  \label{Toverm}
+\end{equation}
+
+\noindent Where $m_0$ is the initial spacecraft mass and $n_0$ is the initial thrust to mass ratio at $t_0$.
+The state space equations of motion for the spacecraft are as follows
+
+\begin{equation}
+    \dot{v} = -\dfrac{\mu_B-rv_\theta^2}{r^2}+\dfrac{T}{m}\sin\delta
+    \label{vrdot_eom}
+\end{equation}
+\begin{equation}
+\dot{v_\theta} = -\dfrac{v_rv_\theta}{r}+\dfrac{T}{m}\cos\delta
+\label{vthetadot_eom}
+\end{equation}
+\begin{equation}
+    \dot{r} = v_r
+    \label{rdot_eom}
+\end{equation}
+\begin{equation}
+\dot{\xi} = \dfrac{v_\theta}{r}
+\end{equation}
+where $\dfrac{T}{m}$ is given in equation \ref{Toverm} and $\delta$ is the thrust pointing angle represent by a
+third-order polynomial of time. The state vector used in this problem is $[x_1 \; x_2 \; x_3 \; x_4]^T = [ v_r \; v_\theta \; r \; \xi ]^T$. \linebreak
+
+\noindent The thurst pointing angle $\delta$ is defined as 
+
+\begin{equation}
+    \delta = 
+    \begin{cases}
+        \zeta_0 +\zeta_1t+\zeta_2t^2 +\zeta_3t^3 & 0 \leq t \leq t_1 \\
+        \nu_0 + \nu_1(t-t_2) + \nu_2(t-t_2)^2+\nu_3(t-t_3)^3 & t_2 \leq t \leq t_f
+    \end{cases}
+    \label{delta_eq}
+\end{equation} \linebreak
+
+\noindent Where the optimum thrust pointing angle coefficients $\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$
+and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3\}$ are determined by PSO. \newline
+
+During the coasting arc the problem consists of a Kepler orbit. As such, the semimajor axis $a$ and eccentricity $e$ of the coasting arc can be computed
+
+\begin{equation}
+a = \dfrac{\mu_Br_1}{2\mu_B - r_1(v_{r1}^2+v_{\theta1}^2)}
+\label{acoast}
+\end{equation}
+
+\begin{equation}
+e = \sqrt{1-\dfrac{r_1^2v_{\theta_1}^2}{\mu_Ba}}
+\label{ecoast}
+\end{equation} \newline
+
+\noindent Provided that the orbit is elliptic ($a > 0$) the true anomaly at $t_1(f_1)$ can be computed as
+
+\begin{equation}
+\sin f_1 = \dfrac{v_{r1}}{e}\sqrt{\dfrac{a(1-e^2)}{\mu_B}} \quad \text{and} \quad \cos{f_1} = \dfrac{v_{\theta_1}}{e}\sqrt{\dfrac{a(1-e^2)}{\mu_B}}-\dfrac{1}{e}
+\label{trueAnamolyCoast}
+\end{equation} \newline
+
+\noindent and the eccentric anomaly $E_1$ as 
+
+\begin{equation}
+\sin{E_1} = \dfrac{\sin{f_1}\sqrt{1-e^2}}{1+e\cos{f_1}} \quad \text{and} \quad 
+\cos{E_1} = \dfrac{\cos{f_1}+e}{1+e\cos{f_1}}
+\label{eccAnamolyCoast}
+\end{equation}
+
+\noindent The PSO parameter $\Delta E$ represents the variation in eccentric anomaly througout the coasting arc. Therefore, the eccentric enomaly at $t_2$ is $E_2 = E_1 + \Delta E$. True anamoly can be
+thus determined utilizing the results of equations in \ref{eccAnamolyCoast}
+
+\begin{equation}
+\sin{f_2} = \dfrac{\sin{E_2}\sqrt{1-e^2}}{1-e\cos{E_2}} \quad \text{and} \quad
+\cos{f_2} = \dfrac{\cos{E_2}-e}{1-e\cos{E_2}}
+\label{trueanamoly2}
+\end{equation}
+
+\noindent Furthermore, the coasting time interval $t_{co}$ can be calculated through Kepler's law as
+\begin{equation}
+t_{co} \overset{\Delta}{=} t_2 - t_1 = \sqrt{\dfrac{a^3}{\mu_B}}[E_2-E_1-e(\sin{E_2}-\sin{E_1})]
+\end{equation}
+
+\noindent The results from \ref{acoast}, \ref{ecoast}, and \ref{trueanamoly2} provide the initial conditions required to numerical integrate 
+the spacecraft equations of motion for the second thrust arc beginning at time $t_2$. These initial conditions for the second thrust arc are computed as
+
+\begin{equation}
+v_{r_2} = \sqrt{\dfrac{\mu_B}{a(1-e^2)}}e\sin{f_2}
+\label{vr2}
+\end{equation}
+
+\begin{equation}
+    v_{\theta2} = \sqrt{\dfrac{\mu_B}{a(1-e^2)}}(1+e\cos{f_2})
+    \label{vtheta2}
+\end{equation}
+
+\begin{equation}
+r_2 = \dfrac{a(1-e^2)}{1+e\cos{f_2}}
+\label{r2}
+\end{equation}
+
+\begin{equation}
+\xi_2 = \xi_1 + (f_2-f_1)
+\end{equation}
+
+\noindent Integrating the second thrust arc with these initial conditions over the second thrust arc time duration with yield the final orbital characteristics. \newline
+
+This system depends on the eight coefficients representing the thrust pointing angles of the first and second thrust arcs, 
+$\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$ and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3 \}$ respectively, and the time intervals for the first coast arc
+$\Delta t_1 \overset{\Delta}{=} t_1$, the coasting arc, $\Delta t_{co}$, and the second coast arc $\Delta t_2 \overset{\Delta}{=} t_f-t_2 $. These 11 unknowns are sought to be chosen to minimize the objective function 
+
+\begin{equation}
+J = \Delta t_1 + \Delta t_2
+\label{J}
+\end{equation}
+
+\noindent Optimizing the unknown coefficients to minimize \ref{J} corresponds to the minimization of propellant consumption. Minimizing propellant consumption
+results in a maximization of the final-to-initial mass ratio given by 
+
+\begin{equation}
+\dfrac{m_f}{m_0} = \dfrac{m_0-\frac{T}{c}\Delta t_1-\frac{T}{c}\Delta t_2}{m_0} = 1-\dfrac{n_0}{c}(\Delta t_1 +\Delta t_2)
+\label{finalToInitialMassRatio}
+\end{equation}
+
+\noindent The coasting arc is required to be elliptic, therefore any particles with $a \leq 0$ are assigned an infinite value.
+
+Since $\Delta t_{co}$ can be computed using $\Delta E$, the eccentric anomaly variation replaces the coasting time interval in the 
+problem's 11 unkown parameters. Each particle in the swarm thus consists of the following
+
+\begin{equation}
+\chi = [ \zeta_0 \quad \zeta_1 \quad \zeta_2 \quad \zeta_3 \quad \nu_0 \quad \nu_1 \quad \nu_2 \quad \nu_3 \quad \Delta t_1 \quad \Delta E \quad \Delta t_2 ]^T
+\label{particleUnkowns}
+\end{equation}
+
+
 \section{Canonical Units Definition}
 \section{Parameter Definition}
 \section{Time Optimization (probably needs rewording)}

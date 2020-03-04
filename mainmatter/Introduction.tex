@@ -46,3 +46,10 @@ with $c_{ij} = \cos{\theta_{ij}}$ and $s_{ij} = \sin{\theta_{ij}}$.
 Here's an example citation: \citep{PDG}.
 
 \section{Thesis Outline}
+
+Impulsive thrust approximations are often used to simply the analysis of the optimal maneuver between circular orbits.
+ In actuality, spacecraft exhibit finite thrust arcs to perform these orbital transfers. This thesis analyzes these minimum burn time, and thus fuel consumption,
+ thrust arcs required for these optimal orbital transfers. Requiring two separate numerical integrations, this is computationally extensive. This thesis
+ then seeks to develop methods to drastically reduce the time required for these computations through means of a C++ implementation utilizing Boost libraries and
+ parallelization through OpenMP. Chapter 2 will detail the finite thrust transfer problem solved within this analysis, while Chapter 3 details the implementation details which were used.
+ Chapter 4 then details the results of these implementations, including speedup comparisons and methods to greater improve the probability of the algorithm approaching an optimal solution.
