@@ -278,7 +278,7 @@ within the PSO algorithm is thus the solution. Psuedocode for the algorithm is a
 
 \section{Reducing Computational Time}
 
-\subsection{Problem Selection}
+\subsection{Problem Selection} \label{problemSelection}
 The finite thrust arc problem explored within this thesis was chosen as a benchmark as a PSO algorithm requiring 
 lots of computational resources. Particles within this problem require lots of execution time for two main reasons
 
@@ -293,5 +293,25 @@ in the search for optimal values. This combination of individual particles requi
 was sufficient in evaluating potential speedup methods.
 
 \subsection{Parallelization}
+
+The conditions referenced within section \ref{problemSelection} make the finite thrust transfer problem a good candidate for parallelization.
+Within each iteration, each particle is evaluated for its value of the objective function $J$. This  contains the computationally heavy numerical integrations. Within this section of the PSO algorithm, each particle is evaluated independently. 
+As such, parallel processing can be used to evaluate multiple particles within the swarm simultaneously. Only after each iteration is complete and position and velocity updating occurs do the particles become dependent on each others' results. Since 
+the updating portion of the algorithm is not computationally expensive, a large potential benefit can be gained from paralellizing the inter-iteration computations. A simplified version of the parallelized algorithm is shown below.
+
+\begin{algorithm}
+    \caption{Simplified parallel PSO Implementation}
+    \begin{algorithmic}
+    \FOR{ \text{\emph{iteration}} \text{ \textbf{in} \emph{Num Iterations}}}
+    \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
+    \STATE Evaluate objective function $J$
+    \hspace{17em}\smash{$\left.\rule{0pt}{1.5\baselineskip}\right\}\ \mbox{in parallel}$}
+
+    \ENDFOR
+    \STATE Update particle velocity based on $pBest, gBest$, and current velocity
+    \STATE Update particle position
+    \ENDFOR
+    \end{algorithmic}
+\end{algorithm}
 
 \newpage
