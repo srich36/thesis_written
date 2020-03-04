@@ -65,6 +65,7 @@ The state space equations of motion for the spacecraft are as follows
     \label{rdot_eom}
 \end{equation}
 \begin{equation}
+    \label{xidot_eom}
 \dot{\xi} = \dfrac{v_\theta}{r}
 \end{equation}
 where $\dfrac{T}{m}$ is given in equation \ref{Toverm} and $\delta$ is the thrust pointing angle represent by a
@@ -194,6 +195,7 @@ d_3 = r(t_f)-R_2
 \noindent A maximum acceptable error of $10^-3$ is used and the $\alpha_k$ coefficients assigned as follows 
 
 \begin{equation}
+    \label{penaltyCoefficients}
 \alpha_k = \begin{cases}
     100 & |d_k| > 10^{-3} \\
     0 & |d_k| < 10^{-3}
@@ -206,10 +208,13 @@ d_3 = r(t_f)-R_2
 This problem employs a canonical set of units to simplify the analysis. One distance unit (DU) is defined as the radius of the initial orbit,
 and one time unit (TU) definted such that $\mu_B = 1 \frac{DU^3}{TU^2}$. The unknown coefficients are thus sought within the following ranges
 
-\begin{gather}
+\begin{equation}
+\label{particleBounds}
+\begin{gathered}
 0 \; TU \leq t_1 \leq 3 \; TU \quad 0 \leq \Delta E \leq 2\pi \quad 0 \; TU \leq \Delta t_2 \leq 3 \; TU \\
 -1 \leq \xi_k \leq 1 \quad -1 \leq \nu_k \leq 1 \quad (k = 0,1,2,3)
-\end{gather}
+\end{gathered}
+\end{equation}
 
 \noindent The effective exhaust velocity $c$ is set to $0.5 \frac{DU}{TU^2}$ and the initial thrust-to-mass ratio set to $0.2 \frac{DU}{TU^2}$. 
 
@@ -274,7 +279,62 @@ within the PSO algorithm is thus the solution. Psuedocode for the algorithm is a
     \end{algorithmic}
 
 \end{algorithm}
+
 \subsection{Finite Thrust Arc Implementation}
+
+The Finite Thrust Arc problem explored within this thesis was implemented using the 11 unkown parameters in equation \ref{particleUnkowns}
+and corresponding objective function \ref{JwithPenalty}. Position and velocity bounds for the PSO algorithm are given by \ref{particleBounds}. Particle position updating was 
+standard as follows
+
+\begin{equation}
+    \label{positionUpdating}
+p_i = p_i+v_i
+\end{equation}
+
+\noindent Where $i$ ranged from $1$ to the $11$ unknowns. \newline
+
+\noindent Velocity updating was implemented as
+
+\begin{equation}
+    \label{velocityUpdating}
+v_i = v_ic_i+c_c(pBest_i-p_i)+c_s(gBest-Pi)
+\end{equation}
+
+\noindent where the three accelerator coefficients were defined as
+
+\begin{equation}
+    \label{acceleratorCoefficients}
+c_i = \dfrac{(1+rand(0,1))}{2} \quad c_c = 1.49445(rand(0,1)) \quad c_s = 1.49445(rand(0,1))
+\end{equation}
+
+\noindent and $rand(0,1)$ was a random number generated between 0 and 1. \newline
+
+\noindent A detailed look at the main portion of the PSO psuedocode is shown below
+
+\begin{algorithm}[H]
+    \caption{Main Finite Thrust Transfer PSO Algorithm}
+    \begin{algorithmic}
+
+    \FOR{ \text{\emph{iteration}} \text{ \textbf{in} \emph{Num Iterations}}}
+    \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
+    \STATE Numerically integrate first thrust arc using state-space equations \ref{vrdot_eom},
+    \ref{vthetadot_eom}, \ref{rdot_eom}, and \ref{xidot_eom}
+    \STATE Compute initial conditions for second thrust arc using equations \ref{acoast}, \ref{ecoast}, and \ref{trueanamoly2}
+    \STATE Numerical integrate second thrust arc using state-space equations
+    \STATE Evaluate $\tilde{J}$ (\ref{JwithPenalty}) numerically integrated second thrust arc values and penalty terms \ref{penaltyValues} and
+    penalty coefficients \ref{penaltyCoefficients}
+    \ENDFOR
+    \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
+    \STATE Update particle velocity with equation \ref{velocityUpdating}
+    \STATE Check velocity bounds
+    \STATE Update particle Position with equation \ref{positionUpdating}
+    \STATE Check position bounds
+    \ENDFOR
+    \ENDFOR
+    \STATE Use $gBest$ as solution
+    \end{algorithmic}
+
+\end{algorithm}
 
 \section{Reducing Computational Time}
 
@@ -299,7 +359,7 @@ Within each iteration, each particle is evaluated for its value of the objective
 As such, parallel processing can be used to evaluate multiple particles within the swarm simultaneously. Only after each iteration is complete and position and velocity updating occurs do the particles become dependent on each others' results. Since 
 the updating portion of the algorithm is not computationally expensive, a large potential benefit can be gained from paralellizing the inter-iteration computations. A simplified version of the parallelized algorithm is shown below.
 
-\begin{algorithm}
+\begin{algorithm}[H]
     \caption{Simplified parallel PSO Implementation}
     \begin{algorithmic}
     \FOR{ \text{\emph{iteration}} \text{ \textbf{in} \emph{Num Iterations}}}
