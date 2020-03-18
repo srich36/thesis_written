@@ -9,4 +9,90 @@
 \section{Rehydration Results}
 
 \section{Speedup}
+
+\subsection{MATLAB}
+
+%Putting the H here ensures the table goes exactly where you put
+%it in the code
+\begin{table}[H]
+    \centering
+    \begin{tabular}{@{}llll@{}}
+    \toprule
+    \textbf{Num Particles} & \textbf{Num Particles} & \textbf{Num Iterations} & \textbf{Time (s)} \\ \midrule
+    25            & 25            & 250            & 30.527   \\
+    25            & 25            & 500            & 39.15    \\
+    25            & 25            & 1000           & 68.88    \\
+    50            & 50            & 250            & 30.527   \\
+    50            & 50            & 500            & 80.4246  \\
+    50            & 50            & 1000           & 141.151  \\
+    100           & 100           & 250            & 95.956   \\
+    100           & 100           & 500            & 152.22   \\
+    100           & 100           & 1000           & 306.732  \\
+    150           & 150           & 250            & 161.3    \\
+    150           & 150           & 500            & 195.87   \\
+    150           & 150           & 1000           & 388.03   \\
+    200           & 200           & 250            & 157.061  \\
+    200           & 200           & 500            & 251.575  \\
+    200           & 200           & 1000           & 457.55   \\ \bottomrule
+    \end{tabular}
+    \caption{MATLAB Numerical Results - Wall Clock Time}
+    \label{tab:MATLAB-speedup}
+    \end{table}
+
+\subsection{C++ Single Threaded}
+
+% Please add the following required packages to your document preamble:
+% \usepackage{booktabs}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{@{}llll@{}}
+    \toprule
+    \textbf{Num Particles} & \textbf{Time (s)} & \textbf{\% Speedup to MATLAB} & \textbf{X faster than MATLAB} \\ \midrule
+    25            & 1.732    & 94.32633406          & 17.62528868              \\
+    25            & 2.39     & 93.89527458          & 16.38075314              \\
+    25            & 3.92     & 94.30894309          & 17.57142857              \\
+    50            & 2.96     & 90.30366561          & 10.31317568              \\
+    50            & 3.26     & 95.94651388          & 24.6701227               \\
+    50            & 5.695    & 95.96531374          & 24.78507463              \\
+    100           & 6.659    & 93.060361            & 14.40997147              \\
+    100           & 7.21     & 95.2634345           & 21.11234397              \\
+    100           & 11.83    & 96.14321297          & 25.92831784              \\
+    150           & 7.26     & 95.49907006          & 22.21763085              \\
+    150           & 12.64    & 93.54674018          & 15.4960443               \\
+    150           & 16.68    & 95.7013633           & 23.26318945              \\
+    200           & 7.77     & 95.05287754          & 20.21377091              \\
+    200           & 11.423   & 95.45940574          & 22.02354898              \\
+    200           & 21.06    & 95.39722435          & 21.72602089              \\ \bottomrule
+    \end{tabular}
+    \caption{C++ Single Threaded Speedup Results - Wall Clock Time}
+    \label{tab:ST-speedup}
+    \end{table}
+
+
+\subsection{C++ OpenMP}
+\begin{table}[H]
+    \centering
+    \begin{tabular}{@{}lllll@{}}
+    \toprule
+    \textbf{Num Particles} & \textbf{Time (s)} & \textbf{\% Speedup: MATLAB} & \textbf{\% Speedup: 1 Thread} & \textbf{X faster than MATLAB} \\ \midrule
+    25  & 1.78  & 94.16909621 & -2.771362587 & 17.15       \\
+    25  & 3.4   & 91.31545338 & -42.25941423 & 11.51470588 \\
+    25  & 5.23  & 92.40708479 & -33.41836735 & 13.17017208 \\
+    50  & 2.81  & 90.7950339  & 5.067567568  & 10.86370107 \\
+    50  & 4.77  & 94.06897889 & -46.3190184  & 16.86050314 \\
+    50  & 8.51  & 93.9709956  & -49.42932397 & 16.58648649 \\
+    100 & 5.71  & 94.04935595 & 14.2513891   & 16.80490368 \\
+    100 & 6.6   & 95.66417028 & 8.460471567  & 23.06363636 \\
+    100 & 11.73 & 96.17581472 & 0.8453085376 & 26.14936061 \\
+    150 & 4.92  & 96.94978301 & 32.23140496  & 32.78455285 \\
+    150 & 9.77  & 95.01199775 & 22.7056962   & 20.04810645 \\
+    150 & 13.93 & 96.41007139 & 16.48681055  & 27.85570711 \\
+    200 & 5.88  & 96.25623166 & 24.32432432  & 26.71105442 \\
+    200 & 10.46 & 95.84219418 & 8.4303598    & 24.05114723 \\
+    200 & 22.42 & 95.09998907 & -6.457739791 & 20.40811775 \\ \bottomrule
+    \end{tabular}
+    \caption{OpenMP Speedup Results - Wall Clock Execution Time}
+    \label{tab:OpenMP-speedup}
+    \end{table}
+
 \newpage
