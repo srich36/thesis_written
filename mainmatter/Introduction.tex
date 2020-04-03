@@ -5,51 +5,42 @@
 \chapter{Introduction and Historical Review}
 \newpage
 
-\section{Introduction}
-Blah blah blah. Here is an example of how to include and cite a figure: see Figure~\ref{fig:example_figure}
-\begin{figure}[H]
-\center\includegraphics[width=0.4\textwidth]{figures/ExampleFigure.png}
-\caption[Caption to go in list of figures]{Caption to go underneath figure}
-\label{fig:example_figure}
-\end{figure}
+\section{Introduction and Literature Review}
 
-\section{Literature Review}
-Blah blah blah Here's an example of a table: see Table~\ref{tab:best_values}.
+\subsection{Finite Thrust Transfer}
 
-\begin{table}[H]
-\centering\onehalfspacing
-\vline
-\begin{tabular}{c c c}
-\hline
-\textbf{Parameter} & \vline & \textbf{Current Best Value}\\
-\hline
-$\Delta m^2_{21}$ & \vline & $7.50^{+0.19}_{-0.20} \times 10^{-3}\;\mathrm{eV}^2$\\
-$|\Delta m^2_{32}|$ & \vline & $2.32^{+0.12}_{-0.08} \times 10^{-5}\;\mathrm{eV}^2$\\
-$\sin^2{(\theta_{12})}$ & \vline & $0.857^{+0.023}_{-0.025}$\\
-$\sin^2{(2\theta_{23})}$ & \vline & $>0.95$\\
-$\sin^2{(\theta_{13})}$ & \vline &  $0.098\pm 0.013$\\
-\hline\end{tabular}\vline
-\captionsetup{width=0.86\textwidth}
-\caption[Names of table for list of tables]{Name of table for caption above table}
-\label{tab:best_values}
-\end{table}
+Impulsive thrust approximations are used to simplify the computations used in modeling orbital transfers under high-thrust assumptions.
+More rigorous analysis of orbital transfers, in correspondence with actual spacecraft maneuvers, requires thrust to be finite. Numerous algorithms have been
+proposed to model these finite thrust arcs. Grund and Pitkin proposed an iterative method for computing the optimal trajectory requiring the impulsive transfer trajectory as
+an initial solution \citep{Fthrust1}. Further literature introduces an indirect solution applying optimal control theory using nonlinear programming from an initially guessed
+solution \citep{Fthrust2}. Pontani and Conway then proposed a stochastic algorithm, particle swarm optimization, for the computation of the optimal transfer trajectory \citep{Pontani_Conway}. The problem was formulated as 
+a system of 11 unknown parameters and modeled with an objective function aimed at minimizing fuel consumption
+and solution error. This thesis utilizes this problem formation in its further exploration of the finite thrust transfer problem.
 
-Here's an example of an equation and some math:
-\begin{equation}
-  U = \begin{pmatrix} c_{12}c_{13} & s_{12}c_{13} & s_{13}e^{i\delta}\\
-    -s_{12}c_{23} - c_{12}s_{23}s_{13}e^{i\delta} & c_{12}c_{23} - s_{12}s_{23}s_{13}e^{i\delta} & s_{23}c_{13}\\
-    s_{12}s_{23} - c_{12}c_{23}s_{13}e^{i\delta} & -c_{12}s_{12} - s_{12}c_{23}s_{13}e^{i\delta} & c_{23}c_{13}
-  \end{pmatrix},
-\end{equation}
-with $c_{ij} = \cos{\theta_{ij}}$ and $s_{ij} = \sin{\theta_{ij}}$.
+\subsection{Particle Swarm Optimization}
 
-Here's an example citation: \citep{PDG}.
+Since its introduction in 1995 by Kennedy and Eberhart \citep{Initial_PSO}, particle swarm optimization has had numerous implications in various aerospace fields and beyond.
+The algorithm was originally designed to simulate social behavior within a flock of birds but has since been adapted as a stochastic solution for problems
+requiring numerical algorithms. Particle swarm optimization consists of a set of possible solutions, referred to as particles, which then explore the solution search space due to
+computed velocity update parameters. The velocity change of each particle per algorithm iteration depends on the three things: the particle's best historical position, the best historical
+solution within the entire solution set (referred to as the swarm), and the particle's current velocity. In forming the algorithm in this way, many particle swarm optimization techniques 
+require no prior knowledge of the solution space and do not require the problem to be differentiable.
+
+Particle swarm optimization's nature as a metaheuristic algorithm has lent itself to the application of various problems,
+including structural design optimization, responsive theater maneuvers, corrosion fatigue, and path-constrained minimal time satellite reorientation
+\citep{PSO1, PSO2, PSO3, PSO4}. As a stochastic algorithm, however, a global optimal solution within the search space is not guaranteed for every execution of the algorithm. 
+This requires multiple runs of the algorithm and increased computation. As such, significant effort has been devoted to reducing the computational time for this class of
+algorithms. One proposed such method parallel computation. Various papers detail problem-specific parallel particle swarm optimization implementations and the resulting 
+effect on computation time \citep{PPSO1, PPSO2, PPSO3}. In addition to algorithm parallelization, this thesis proposes a particle swarm optimization implementation within C++.
+This development seeks to reduce computational
+burden with the finer grain memory control synonymous with lower-level programming languages. 
+
 
 \section{Thesis Outline}
 
-Impulsive thrust approximations are often used to simply the analysis of the optimal maneuver between circular orbits.
- In actuality, spacecraft exhibit finite thrust arcs to perform these orbital transfers. This thesis analyzes these minimum burn time, and thus fuel consumption,
- thrust arcs required for these optimal orbital transfers. Requiring two separate numerical integrations, this is computationally extensive. This thesis
- then seeks to develop methods to drastically reduce the time required for these computations through means of a C++ implementation utilizing Boost libraries and
- parallelization through OpenMP. Chapter 2 will detail the finite thrust transfer problem solved within this analysis, while Chapter 3 details the implementation details which were used.
- Chapter 4 then details the results of these implementations, including speedup comparisons and methods to greater improve the probability of the algorithm approaching an optimal solution.
+Chapter 2 of this thesis defines the finite thrust transfer problem to be analyzed. This chapter introduces the development of the problem
+and the particle swarm optimization method designed to explore its solutions. Additionally, this chapter details the generalized paralellized particle swarm optimization algorithm.
+Chapter 3 then delves into the problem-specific implementations within MATLAB and C++. Included within
+this chapter are details on the parallelized C++ version of the algorithm. 
+Chapter 4 then details the results of these implementations, including speedup comparisons and methods to greater improve the probability of the algorithm approaching an optimal solution.
+Finally, chapter 5 explores draws conclusions from these results and offers recommendations for future research. 

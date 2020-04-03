@@ -38,9 +38,8 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{multirow}
-
-
-
+\usepackage[intoc]{nomencl}
+\makenomenclature
 
 
 \begin{document}
@@ -53,6 +52,7 @@
 \include{frontmatter/list_of_figures}
 \include{frontmatter/list_of_tables}
 \include{frontmatter/acknowledgements}
+\include{frontmatter/nomenclature}
 
 % same for the mainmatter
 \mainmatter
@@ -64,6 +64,7 @@
 % same for the backmatter
 \backmatter
 \include{backmatter/bibliography}
+
 
 \end{document}
 

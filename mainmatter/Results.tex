@@ -3,8 +3,20 @@
 % Contains formatting and content of chapter 4 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Results}
-
 \section{Numerical Results}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}lllllll@{}}
+  \toprule
+  $\beta$ & $\Delta t_1$ & $\Delta t_{co}$ & $\Delta t_2$ & $J$ & $m_f/m_0$ & $m_f/m_{0h}$ \\ \midrule
+  2 & 0.671 & 5.229 & 0.411 & 1.082 & 0.567062 & 0.56614 \\
+  4 & 1.044 & 11.834 & 0.442 & 1.487 & 0.405365 & 0.407642 \\
+  6 & 1.178 & 20.006 & 0.413 & 1.59 & 0.3638 & 0.368367 \\
+  8 & 1.25 & 24.87 & 0.403 & 1.652 & 0.339164 & 0.353299 \\
+  10 & 1.282 & 41.08 & 0.365 & 1.647 & 0.34106 & 0.346603 \\ \bottomrule
+  \end{tabular}
+  \end{table}
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{./jpgs/thrustArcB2.jpg}
