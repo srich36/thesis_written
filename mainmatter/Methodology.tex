@@ -2,15 +2,42 @@
 % chapter3.tex                                 %
 % Contains formatting and content of chapter 3 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Methodology}
-\section{Particle Swarm Optimization Overview}
-\section{Problem Implementation}
-Stuff detailing the general rk-dopri-5 algorithm goes here
+\chapter{Problem Implementation}
+\section{Overview}
+\noindent The finite thrust arc problem consists of 11 unknowns and requires two numerical integrations for each solution candidate within the
+particle swarm. Additionally, it necessitates a high absolute and relative tolerance when integrated with variable step sized integrators. These
+components serve to make this problem a suitable benchmark for the performance of different implementations of the particle swarm optimization algorithm. \newline
+
+\noindent To maintain consistency between different implementation targets, the numerical integration algorithm, absolute and relative tolerance values,
+and minimum step size constraints were held constant. All implementations employed a fifth order Runge-Kutta Dormand Prince variable step size integrator
+throughout both thrust arcs. The tolerances were defined as
+
+\begin{equation}
+AbsTol = 10^{-9} \quad \text{and} \quad RelTol = 10^{-9} 
+\label{eq:tolerances}
+\end{equation}
+
+\noindent And the minimum step sized as 
+
+\begin{equation}
+    h_{min} = 7.105427*10^{-15}
+    \label{eq:min-step-size}
+\end{equation}
+
+\noindent Execution time was measured as wall-clock time (CPU time was not recorded) and was computed from swarm initialization 
+to algorithm completion. File operations were not included within this measurement. \newline
+
+\noindent The problem was benchmarked using the $\beta = 2$ case with various swarm sizes and iteration numbers. Unless otherwise 
+specified, all data within this thesis was computed as the average of 30 algorithm executions held constant at the given parameters. 
+Numerical analysis was additionally performed on the $\beta=4,6,8 \text{ and } 10$ cases, though these solutions were not benchmarked for execution time.
+
 \subsection{MATLAB}
+\subsection{Thrust Arcs}
+\subsection{Rehyrdration}
 MATLAB implementation details go here e.g. ODE45, etc.
 \subsection{C++ Single Threaded}
 Details about Boost libraries, timers, etc. go here
 \subsection{C++ Parallelization}
-Details about OpenMP go Test
+Details about OpenMP
 
 \newpage
