@@ -33,12 +33,16 @@
 {\vspace{8ex}\chaptertitlename\ \thechapter}{20pt}{\Huge}
 \renewcommand{\bibname}{References}
 
-\usepackage{algorithm}
-\usepackage{algorithmic}
-\usepackage{booktabs}
+\usepackage{algorithm}  % algorithms
+\usepackage{algorithmic} % algorithms
+\usepackage{booktabs} % nice tables
 \usepackage{graphicx}
-\usepackage{multirow}
-\usepackage[intoc]{nomencl}
+\usepackage{multirow, multicol}
+\usepackage[intoc]{nomencl} % nomenclature
+\usepackage{bm} % bold math
+
+\renewcommand{\nompreamble}{\begin{multicols}{2}}
+\renewcommand{\nompostamble}{\end{multicols}}
 \makenomenclature
 
 
