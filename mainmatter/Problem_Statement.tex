@@ -11,7 +11,7 @@ to find and optimal solution. The development of this problem is derived from \c
 
 This transfer is developed with respect to an initial circular orbit of radius $R_1$ and a final circular orbit of radius $R_2$ subject to the conditions $R_1 > R_2$ where the parameter $\beta = R_2/R_1 > 1$. 
 The inertial reference frame selected for this problem definition is centered at the attracting body. The corresponding coordinate frame definition is as follows: The $x$ axis is aligned with the spacecraft at the initial time $t_0$ and the $y$ axis is located in the orbital plane.
-The $z$ axis is determined by the right hand rule of these two basis axis. Within this problem $v_r$ denotes the spacecraft radial velocity, $v_\theta$ the spacecraft the horizontal component of velocity, $r$ the radisu, and $\zeta$ the angular displacement from the $x$ axis. The gravitational
+The $z$ axis is determined by the right hand rule of these two basis axes. Within this problem $v_r$ denotes the spacecraft radial velocity, $v_\theta$ the horizontal component of velocity, $r$ the radius, and $\zeta$ the angular displacement from the $x$ axis. The gravitational
 parameter of the attracting body is $\mu_B$. \newline
 
 \noindent Initial conditions at time $t_0$ are given by
@@ -28,7 +28,7 @@ v_r(t_0) = 0  \quad  v_\theta(t_0) = \sqrt{\mu_B/R_1} \quad r(t_0) = R_1 \quad \
 
 The problem assumes a transfer trajectory of an initial thrust arc, followed by a coasting arc, and ending with a second thrust arc. 
 Optimization of this problem corresponds to determining the thrust pointing angle function corresponding to the minimization of propellant consumption 
-subject to the constraints of equation \ref{final_conditions}.\newline
+subject to the constraints of Eq. (\ref{final_conditions}).\newline
 
 \noindent Additional assumptions are made to simplify the analysis:
 
@@ -38,7 +38,7 @@ subject to the constraints of equation \ref{final_conditions}.\newline
 \end{enumerate}
 
 $T$ and $c$ are used to represent the spacecraft thrust level and effective exhaust velocity respectively. The previous assumptions
-indicate that the thrust-to-mass ratio has the following form
+indicate that the thrust-to-mass ratio has the form
 
 \begin{equation}
 \dfrac{T}{m} = \begin{cases} 
@@ -49,8 +49,8 @@ indicate that the thrust-to-mass ratio has the following form
   \label{Toverm}
 \end{equation}
 
-\noindent Where $m_0$ is the initial spacecraft mass and $n_0$ is the initial thrust to mass ratio at $t_0$.
-The state space equations of motion for the spacecraft are as follows
+\noindent $m_0$ is the initial spacecraft mass and $n_0$ is the initial thrust to mass ratio at $t_0$.
+The state space equations of motion for the spacecraft are
 
 \begin{equation}
     \dot{v} = -\dfrac{\mu_B-rv_\theta^2}{r^2}+\dfrac{T}{m}\sin\delta
@@ -68,7 +68,7 @@ The state space equations of motion for the spacecraft are as follows
     \label{xidot_eom}
 \dot{\xi} = \dfrac{v_\theta}{r}
 \end{equation}
-where $\dfrac{T}{m}$ is given in equation \ref{Toverm} and $\delta$ is the thrust pointing angle represent by a
+where $\dfrac{T}{m}$ is given in E.q.(\ref{Toverm}) and $\delta$ is the thrust pointing angle represent by a
 third-order polynomial of time. The state vector used in this problem is $[x_1 \; x_2 \; x_3 \; x_4]^T = [ v_r \; v_\theta \; r \; \xi ]^T$. \linebreak
 
 \noindent The thurst pointing angle $\delta$ is defined as 
@@ -82,10 +82,10 @@ third-order polynomial of time. The state vector used in this problem is $[x_1 \
     \label{delta_eq}
 \end{equation} \linebreak
 
-\noindent Where the optimum thrust pointing angle coefficients $\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$
+\noindent The optimum thrust pointing angle coefficients $\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$
 and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3\}$ are determined by PSO. \newline
 
-During the coasting arc the problem consists of a Kepler orbit. As such, the semimajor axis $a$ and eccentricity $e$ of the coasting arc can be computed
+During the coasting arc the problem consists of a Keplerian orbit. As such, the semimajor axis $a$ and eccentricity $e$ of the coasting arc can be computed as
 
 \begin{equation}
 a = \dfrac{\mu_Br_1}{2\mu_B - r_1(v_{r1}^2+v_{\theta1}^2)}
@@ -113,7 +113,7 @@ e = \sqrt{1-\dfrac{r_1^2v_{\theta_1}^2}{\mu_Ba}}
 \end{equation}
 
 \noindent The PSO parameter $\Delta E$ represents the variation in eccentric anomaly througout the coasting arc. Therefore, the eccentric enomaly at $t_2$ is $E_2 = E_1 + \Delta E$. True anamoly can be
-thus determined utilizing the results of equations in \ref{eccAnamolyCoast}
+thus determined utilizing the results of Eq. (\ref{eccAnamolyCoast})
 
 \begin{equation}
 \sin{f_2} = \dfrac{\sin{E_2}\sqrt{1-e^2}}{1-e\cos{E_2}} \quad \text{and} \quad
@@ -126,7 +126,7 @@ thus determined utilizing the results of equations in \ref{eccAnamolyCoast}
 t_{co} \overset{\Delta}{=} t_2 - t_1 = \sqrt{\dfrac{a^3}{\mu_B}}[E_2-E_1-e(\sin{E_2}-\sin{E_1})]
 \end{equation}
 
-\noindent The results from \ref{acoast}, \ref{ecoast}, and \ref{trueanamoly2} provide the initial conditions required to numerical integrate 
+\noindent The results from Eqs. (\ref{acoast}, \ref{ecoast}, and \ref{trueanamoly2}) provide the initial conditions required to numerical integrate 
 the spacecraft equations of motion for the second thrust arc beginning at time $t_2$. These initial conditions for the second thrust arc are computed as
 
 \begin{equation}
@@ -177,7 +177,7 @@ problem's 11 unkown parameters. Each particle in the swarm thus consists of the 
 \label{particleUnkowns}
 \end{equation}
 
-To enforce the constraints set forth in equation \ref{final_conditions} three penalty terms are added to the objective function \ref{J}.
+To enforce the constraints set forth in Eq. (\ref{final_conditions}) three penalty terms are added to the objective function Eq. (\ref{J}).
 
 \begin{equation}
 \tilde{J} = \Delta t_1 + \Delta t_2 + \sum_{k=1}^3 \alpha_k|d_k| 
@@ -192,7 +192,7 @@ d_3 = r(t_f)-R_2
 \label{penaltyValues}
 \end{equation}
 
-\noindent A maximum acceptable error of $10^-3$ is used and the $\alpha_k$ coefficients assigned as follows 
+\noindent A maximum acceptable error of $10^{-3}$ is used and the $\alpha_k$ coefficients assigned as  
 
 \begin{equation}
     \label{penaltyCoefficients}
@@ -238,7 +238,7 @@ and velocity updated based on a variety of factors
 \begin{enumerate}
     \item How far each of the particle's parameters differs from the global best particle ever recorded's parameters
     \item How far each of the particle's parameters differs from the parameters of its historical personal best values
-    \item Its current velocity
+    \item Its current velocity, where velocity refers to the rate of change of a particle's position in the search space per iteration
 \end{enumerate}
 
 \noindent This process continues for the set number of iterations. The global best particle, i.e. set of unknown parameters, found 
@@ -282,32 +282,32 @@ within the PSO algorithm is thus the solution. Psuedocode for the algorithm is a
 
 \subsection{Finite Thrust Arc Implementation}
 
-The Finite Thrust Arc problem explored within this thesis was implemented using the 11 unkown parameters in equation \ref{particleUnkowns}
-and corresponding objective function \ref{JwithPenalty}. Position and velocity bounds for the PSO algorithm are given by \ref{particleBounds}. Particle position updating was 
-standard as follows
+The Finite Thrust Arc problem explored within this thesis was implemented using the 11 unknown parameters in equation Eq. (\ref{particleUnkowns})
+and corresponding objective function Eq. (\ref{JwithPenalty}). Position and velocity bounds for the PSO algorithm are given by Eq. (\ref{particleBounds}). Particle position updating uses 
+the standard form
 
 \begin{equation}
     \label{positionUpdating}
 p_i = p_i+v_i
 \end{equation}
 
-\noindent Where $i$ ranged from $1$ to the $11$ unknowns. \newline
+\noindent $i$ ranges from $1$ to the $11$ unknowns. \newline
 
-\noindent Velocity updating was implemented as
+\noindent Velocity updating is implemented as
 
 \begin{equation}
     \label{velocityUpdating}
 v_i = v_ic_i+c_c(pBest_i-p_i)+c_s(gBest-Pi)
 \end{equation}
 
-\noindent where the three accelerator coefficients were defined as
+\noindent where the three accelerator coefficients are defined as
 
 \begin{equation}
     \label{acceleratorCoefficients}
 c_i = \dfrac{(1+rand(0,1))}{2} \quad c_c = 1.49445(rand(0,1)) \quad c_s = 1.49445(rand(0,1))
 \end{equation}
 
-\noindent and $rand(0,1)$ was a random number generated between 0 and 1. \newline
+\noindent and $rand(0,1)$ is a uniformly distributed random number generated between 0 and 1. \newline
 
 \noindent A detailed look at the main portion of the PSO psuedocode is shown below
 
