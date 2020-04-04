@@ -296,14 +296,14 @@ p_i = p_i+v_i
 \noindent Velocity updating is implemented as
 
 \begin{equation}
-    \label{velocityUpdating}
+    \label{eq:velocityUpdating}
 v_i = v_ic_i+c_c(pBest_i-p_i)+c_s(gBest-Pi)
 \end{equation}
 
 \noindent where the three accelerator coefficients are defined as
 
 \begin{equation}
-    \label{acceleratorCoefficients}
+    \label{eq:acceleratorCoefficients}
 c_i = \dfrac{(1+rand(0,1))}{2} \quad c_c = 1.49445(rand(0,1)) \quad c_s = 1.49445(rand(0,1))
 \end{equation}
 

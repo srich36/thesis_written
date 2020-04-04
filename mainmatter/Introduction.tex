@@ -9,7 +9,7 @@
 
 \subsection{Finite Thrust Transfer}
 
-Impulsive thrust approximations are used to simplify the computations used in modeling orbital transfers under high-thrust assumptions.
+\noindent Impulsive thrust approximations are used to simplify the computations used in modeling orbital transfers under high-thrust assumptions.
 More rigorous analysis of orbital transfers, in correspondence with actual spacecraft maneuvers, requires thrust to be finite. Numerous algorithms have been
 proposed to model these finite thrust arcs. Grund and Pitkin proposed an iterative method for computing the optimal trajectory requiring the impulsive transfer trajectory as
 an initial solution \citep{Fthrust1}. Further literature introduces an indirect solution applying optimal control theory using nonlinear programming from an initially guessed
@@ -19,26 +19,31 @@ and solution error. This thesis utilizes this problem formation in its further e
 
 \subsection{Particle Swarm Optimization}
 
-Since its introduction in 1995 by Kennedy and Eberhart \citep{Initial_PSO}, particle swarm optimization has had numerous implications in various aerospace fields and beyond.
+\noindent Since its introduction in 1995 by Kennedy and Eberhart \citep{Initial_PSO}, particle swarm optimization has had numerous implications in various aerospace fields and beyond.
 The algorithm was originally designed to simulate social behavior within a flock of birds but has since been adapted as a stochastic solution for problems
 requiring numerical algorithms. Particle swarm optimization consists of a set of possible solutions, referred to as particles, which then explore the solution search space due to
 computed velocity update parameters. The velocity change of each particle per algorithm iteration depends on the three things: the particle's best historical position, the best historical
 solution within the entire solution set (referred to as the swarm), and the particle's current velocity. In forming the algorithm in this way, many particle swarm optimization techniques 
-require no prior knowledge of the solution space and do not require the problem to be differentiable.
+require no prior knowledge of the solution space and do not require the problem to be differentiable. \newline
 
-Particle swarm optimization's nature as a metaheuristic algorithm has lent itself to the application of various problems,
+\noindent Particle swarm optimization's nature as a metaheuristic algorithm has lent itself to the application of various problems,
 including structural design optimization, responsive theater maneuvers, corrosion fatigue, and path-constrained minimal time satellite reorientation
 \citep{PSO1, PSO2, PSO3, PSO4}. As a stochastic algorithm, however, a global optimal solution within the search space is not guaranteed for every execution of the algorithm. 
 This requires multiple runs of the algorithm and increased computation. As such, significant effort has been devoted to reducing the computational time for this class of
 algorithms. One proposed such method parallel computation. Various papers detail problem-specific parallel particle swarm optimization implementations and the resulting 
 effect on computation time \citep{PPSO1, PPSO2, PPSO3}. In addition to algorithm parallelization, this thesis proposes a particle swarm optimization implementation within C++.
 This development seeks to reduce computational
-burden with the finer grain memory control synonymous with lower-level programming languages. 
+burden with the finer grain memory control synonymous with lower-level programming languages. \newline
+
+\noindent One caveat of particle swarm optimization algorithms is stagnation: a condition in which the swarm converges to a non-optimal solution. The attempt to maintain population 
+diversity has been a research area of interest and has seen various approaches in stagnation determination and correction \citep{PSOstag1, PSOstag2}. This thesis introduces a new concept,
+dubbed \textit{rehydration}, in which a portion of the population is randomly reset when the population meets the specified stagnation criteria. Analysis of the effect of this
+\textit{rehydration} on the search for an optimal solution is explored and presented.
 
 
 \section{Thesis Outline}
 
-Chapter 2 of this thesis defines the finite thrust transfer problem to be analyzed. This chapter introduces the development of the problem
+\noindent Chapter 2 of this thesis defines the finite thrust transfer problem to be analyzed. This chapter introduces the development of the problem
 and the particle swarm optimization method designed to explore its solutions. Additionally, this chapter details the generalized paralellized particle swarm optimization algorithm.
 Chapter 3 then delves into the problem-specific implementations within MATLAB and C++. Included within
 this chapter are details on the parallelized C++ version of the algorithm. 
