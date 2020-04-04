@@ -277,6 +277,7 @@ within the PSO algorithm is thus the solution. Psuedocode for the algorithm is a
     \ENDFOR
     \STATE Use $gBest$ as solution
     \end{algorithmic}
+    \label{alg:PSOGeneral}
 
 \end{algorithm}
 
@@ -325,7 +326,7 @@ c_i = \dfrac{(1+rand(0,1))}{2} \quad c_c = 1.49445(rand(0,1)) \quad c_s = 1.4944
     penalty coefficients \ref{penaltyCoefficients}
     \ENDFOR
     \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
-    \STATE Update particle velocity with equation \ref{velocityUpdating}
+    \STATE Update particle velocity with equation \ref{eq:velocityUpdating}
     \STATE Check velocity bounds
     \STATE Update particle Position with equation \ref{positionUpdating}
     \STATE Check position bounds
@@ -333,6 +334,7 @@ c_i = \dfrac{(1+rand(0,1))}{2} \quad c_c = 1.49445(rand(0,1)) \quad c_s = 1.4944
     \ENDFOR
     \STATE Use $gBest$ as solution
     \end{algorithmic}
+    \label{alg:PSOfThrustMain}
 
 \end{algorithm}
 
@@ -360,7 +362,7 @@ As such, parallel processing can be used to evaluate multiple particles within t
 the updating portion of the algorithm is not computationally expensive, a large potential benefit can be gained from paralellizing the inter-iteration computations. A simplified version of the parallelized algorithm is shown below.
 
 \begin{algorithm}[H]
-    \caption{Simplified parallel PSO Implementation}
+    \caption{Simplified parallel PSO Psuedocode}
     \begin{algorithmic}
     \FOR{ \text{\emph{iteration}} \text{ \textbf{in} \emph{Num Iterations}}}
     \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
@@ -372,6 +374,7 @@ the updating portion of the algorithm is not computationally expensive, a large 
     \STATE Update particle position
     \ENDFOR
     \end{algorithmic}
+    \label{alg:PPSOpsuedocode}
 \end{algorithm}
 
 \newpage

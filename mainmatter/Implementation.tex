@@ -28,7 +28,7 @@ AbsTol = 10^{-9} \quad \text{and} \quad RelTol = 10^{-9}
 to algorithm completion. File operations are not included within this measurement. \newline
 
 \noindent The problem is benchmarked using the $\beta = 2$ case with various swarm sizes and iteration numbers. 
-Results from this benchmarking can be seen in (\ref{tab:MATLAB-speedup}, \ref{tab:ST-speedup}, \ref{tab:OpenMP-speedup}). Unless otherwise 
+Results from this benchmarking can be seen in Tables (\ref{tab:MATLAB-speedup}, \ref{tab:ST-speedup}, \ref{tab:OpenMP-speedup}). Unless otherwise 
 specified, all data within this thesis is computed as the average of 30 algorithm executions held constant at the given parameters. 
 All benchmarking is ran without any \textit{rehydration} methods.
 Numerical analysis is additionally performed on the $\beta=4,6,8 \text{ and } 10$ cases, though these solutions are not benchmarked for execution time.
@@ -40,13 +40,13 @@ Numerical analysis is additionally performed on the $\beta=4,6,8 \text{ and } 10
 \noindent MATLAB implements a fifth order Runge-Kutta Dormand Prince variable step sized integrator with the native \code{ODE45} function. \code{ODE45}
 defaults to a minimum step size of $h_{min}$ as given in Eq. (\ref{eq:min-step-size}). Additionally, \code{ODE45}
 presents configuration options for both $AbsTol$ and $RelTol$, utilizing the larger of the two values.
-Integrations for both thrust arcs are configured utilizing the values given in Eq. (\ref{eq:tolerances}).
+Integrations for both thrust arcs are configured with the values given in Eq. (\ref{eq:tolerances}).
 
-\subsection{Implementation Details}
+\subsection{Platform Specific Implementation Details}
 
 \noindent As a stochastic algorithm, particle swarm optimization requires uniformly distributed random numbers to update particle velocities 
 and explore the search space. MATLAB provides a \code{rand} function to generate uniformly distributed
-psuedo-random numbers. These numbers are then used to compute velocity accelerator coefficients as given by Eq. (\ref{eq:acceleratorCoefficients}).
+psuedo-random numbers between $0$ and $1$. These numbers are used to generate the initial swarm and compute velocity accelerator coefficients as given by Eq. (\ref{eq:acceleratorCoefficients}).
 Solutions are computed using the default 16 digits of precision. Execution time is measured using the standard MATLAB
 function \code{tic} and \code{toc}.
 
@@ -61,13 +61,13 @@ solution. Results of these computations can be seen in Fig. (\ref{fig:Tarc-B2}).
 \subsection{Thrust Angles}
 
 \noindent Analysis of the finite thrust transfer problem yields the optimal thrust-pointing-angle time history for a given transfer. 
-Utilizing Eq. (\ref{delta_eq}) the thrust angle $\delta$ is computed for both the first and second thrust arcs. MATLAB is then used
-to graphically model the thrust angle as a function of various quasi-optimal solutions. These results are seen in 
+From Eq. (\ref{delta_eq}) the thrust angle $\delta$ is computed for both the first and second thrust arcs. MATLAB is then used
+to graphically model the thrust angle as a function of time for various quasi-optimal solutions. These results are seen in 
 Fig. (\ref{fig:thrustAnglesB2}). \newline
 
 \subsection{Rehyrdration}
 
-\noindent This thesis also considered the problem of limiting swarm stagnation.
+\noindent This thesis also considers the problem of limiting swarm stagnation.
 \textit{Rehydration} is this thesis' term for the resetting of a percentage of the population under premature convergence.
 This method seeks to expand the search space explored throughout the duration of the algorithm. \newline
 
@@ -76,7 +76,7 @@ percentage change of $J$, deemed $\delta_{Javg}$, over a pre-defined previous nu
 $\delta_{Javg}$ value for stagnation is pre-defined as $\delta_{Jcrit}$.  If $\delta_{Javg} < \delta_{Jcrit}$, the swarm is considered
 stagnated and a portion of the population, $P_{r,\text{\%}}$, is reset. \newline
 
-\noindent Analysis of this rehydration technique focused on determining the effect the parameters $\eta_{iter}$, $\delta_{Jcrit}$,
+\noindent Analysis of this rehydration technique focuses on determining the effect the parameters $\eta_{iter}$, $\delta_{Jcrit}$,
 and $P_{r,\text{\%}}$ have on the solution. For each set of these parameters, the algorithm is ran 30 times and a $\bar{J}_{best}$
 computed. This $\bar{J}_{best}$ is then compared against a $\bar{J}_{best}$ from the result of 300 executions of the algorithm without
 the rehydration method. Results from these comparisons can be seen in Tables 
@@ -86,8 +86,64 @@ All \textit{rehydration} cases are ran with $P_{num} = 100$ and $I_{num} = 1000$
 
 
 \section{C++ Single Threaded}
-\noindent Details about Boost libraries, timers, etc. go here
-\section{C++ Parallelization}
-\noindent Details about OpenMP
 
+\noindent A C++ version of the main particle swarm optimization algorithm is implemented to benchmark execution time across targets.
+C++ provides finer-grain memory management and allows for cache optimization and faster computations.
+While the subject of these optimizations are beyond the scope of this thesis, they can be used to greatly speedup the execution time
+of numerical algorithms. \newline
+
+\noindent This research utilizes the C++ \code{Boost} libraries for numerical computations.
+\code{Boost} implements the aforementioned cache and memory optimizations and is a de-facto standard
+for high performance C++.
+
+\subsection{Integrator}
+
+\noindent \code{Boost} provides \code{odeint}, a library for solving ordinary differential equations. Within \code{odeint}
+there exists a fifth order Runge-Kutta Dormand Prince variable
+step sized integrator. This implements the same algorithm as \code{ODE45} and thus was chosen as the integrator for both finite
+thrust arcs. The method exposes references to the system state which is updated and overwritten at each successive time step. Absolute
+and relative tolerance options are provided, and are set to the values specified in Eq. (\ref{eq:tolerances}). \newline
+
+\noindent By default \code{odeint} does not provide any minimum step size checks nor options to set $h_{min}$.
+As such, a custom integration observer is implemented to compute and limit step size in accordance with Eq. (\ref{eq:min-step-size}). 
+This observer evaluates solution time at successive steps in the integration process and computes their delta for 
+$h_{min}$ regulation.
+
+\subsection{Platform Specific Implementation Details}
+
+\noindent To reduce computational complexity and integrate with \code{Boost} libraries, all 2-D arrays
+are flattened to their one-dimensional counterparts. The corresponding one-dimensional index is computed as
+
+\begin{equation}
+    index = r(w+y)
+    \label{eq:index-conversion}
+\end{equation}
+
+\noindent where $r$ is the zero-based two-dimension row number, $y$ the zero-based two-dimensional column number, and $w$ the two-dimensional array width. All flattened one-dimensional arrays are represented with double precision, dynamically allocated, contiguous blocks
+of memory. \newline
+
+\noindent
+The C++ standard library provides a \code{rand} function for generating psuedo-random numbers.
+To ensure randomness between successive executions, the \code{rand} function is seeded with the number
+of seconds since the Epoch at the start of the program. This function returns an integer 
+between $0$ and \code{\texttt{RAND\char`_MAX}}, where \code{\texttt{RAND\char`_MAX}} is architecture specific. 
+For use in particle swarm optimization, this number is cast as a double
+precision floating point number and bound between $0$ and $1$. This creates the uniformly distributed
+random number generator required for the algorithm. \newline
+
+\noindent Program execution time is measured using successive system calls to \code{gettimeofday}
+at swarm initialization and algorithm completion. Each system call returns the number of seconds
+and microseconds since the Epoch, enabling timing accuracy of up to $10^{-6}$ seconds.
+
+\section{C++ Parallelization}
+\noindent To reduce complexity and limit memory passing overhead, this thesis employs a shared-memory model of 
+parallelization. In this model, memory is shared between all cores and threads on a singular node.
+Standard C++ provides a POSIX compliant threading system to architecture parallel code with this structure. While this provides 
+the lowest level of program management, its implementation is arduous and error prone. As such, the \code{OpenMP}
+specification for creating parallelized programs is utilized. \newline
+
+\noindent \code{OpenMP} provides a set of compiler directives for creating multi-threaded applications. Within parallelized
+regions there must be no inter-thread memory dependency. Naturally, this allows \code{OpenMP} to parallelize particle
+evaluation as seen in algorithm (\ref{alg:PPSOpsuedocode}). This research uses a simple  \code{parallel for}  directive to
+run four concurrent threads within this parallel region.
 \newpage
