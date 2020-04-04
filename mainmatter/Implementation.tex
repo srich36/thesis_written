@@ -9,28 +9,29 @@ particle swarm. Additionally, it necessitates a high absolute and relative toler
 components serve to make this problem a suitable benchmark for the performance of different implementations of the particle swarm optimization algorithm. \newline
 
 \noindent To maintain consistency between different implementation targets, the numerical integration algorithm, absolute and relative tolerance values,
-and minimum step size constraints were held constant. All implementations employed a fifth order Runge-Kutta Dormand Prince variable step size integrator
-throughout both thrust arcs. The tolerances were defined as
+and minimum step size constraints are held constant. All implementations employ a fifth order Runge-Kutta Dormand Prince variable step size integrator
+throughout both thrust arcs. The tolerances are defined as
 
 \begin{equation}
 AbsTol = 10^{-9} \quad \text{and} \quad RelTol = 10^{-9} 
 \label{eq:tolerances}
 \end{equation}
 
-\noindent And the minimum step sized as 
+\noindent And the minimum step size as
 
 \begin{equation}
     h_{min} = 7.105427*10^{-15}
     \label{eq:min-step-size}
 \end{equation}
 
-\noindent Execution time was measured as wall-clock time (CPU time was not recorded) and was computed from swarm initialization 
-to algorithm completion. File operations were not included within this measurement. \newline
+\noindent Execution time is measured as wall-clock time and is computed from swarm initialization 
+to algorithm completion. File operations are not included within this measurement. \newline
 
-\noindent The problem was benchmarked using the $\beta = 2$ case with various swarm sizes and iteration numbers. 
+\noindent The problem is benchmarked using the $\beta = 2$ case with various swarm sizes and iteration numbers. 
 Results from this benchmarking can be seen in (\ref{tab:MATLAB-speedup}, \ref{tab:ST-speedup}, \ref{tab:OpenMP-speedup}). Unless otherwise 
-specified, all data within this thesis was computed as the average of 30 algorithm executions held constant at the given parameters. 
-Numerical analysis was additionally performed on the $\beta=4,6,8 \text{ and } 10$ cases, though these solutions were not benchmarked for execution time.
+specified, all data within this thesis is computed as the average of 30 algorithm executions held constant at the given parameters. 
+All benchmarking is ran without any \textit{rehydration} methods.
+Numerical analysis is additionally performed on the $\beta=4,6,8 \text{ and } 10$ cases, though these solutions are not benchmarked for execution time.
 
 \section{MATLAB}
 
@@ -38,38 +39,51 @@ Numerical analysis was additionally performed on the $\beta=4,6,8 \text{ and } 1
 
 \noindent MATLAB implements a fifth order Runge-Kutta Dormand Prince variable step sized integrator with the native \code{ODE45} function. \code{ODE45}
 defaults to a minimum step size of $h_{min}$ as given in Eq. (\ref{eq:min-step-size}). Additionally, \code{ODE45}
-presents configuration options for both $AbsTol$ and $RelTol$, utilizing the larger (less-strict) of the two values. 
-Integrations for both thrust arcs were configured utilizing the values given in Eq. (\ref{eq:tolerances}).
+presents configuration options for both $AbsTol$ and $RelTol$, utilizing the larger of the two values.
+Integrations for both thrust arcs are configured utilizing the values given in Eq. (\ref{eq:tolerances}).
 
 \subsection{Implementation Details}
 
 \noindent As a stochastic algorithm, particle swarm optimization requires uniformly distributed random numbers to update particle velocities 
 and explore the search space. MATLAB provides a \code{rand} function to generate uniformly distributed
-psuedo-random numbers. These numbers were then used to compute velocity accelerator coefficients as given by Eq. (\ref{eq:acceleratorCoefficients}).
-Solutions were computed using the default 16 digits of precision. Execution time was measured using the standard MATLAB
+psuedo-random numbers. These numbers are then used to compute velocity accelerator coefficients as given by Eq. (\ref{eq:acceleratorCoefficients}).
+Solutions are computed using the default 16 digits of precision. Execution time is measured using the standard MATLAB
 function \code{tic} and \code{toc}.
 
 
 \subsection{Thrust Arcs}
 
-\noindent Further analysis of optimal thrust arcs throughout the duration of the orbital transfer was computed within MATLAB.
-The transfer was broken down into its three distinct components: the first thrust arc, the coasting arc, and the second thrust arc. 
-A set of $r$ and $\theta$ values throughout these three durations were joined together and used to create a polar plot of the given particle's transfer
-solution. Results of these computations can be seen in (\ref{fig:Tarc-B2}). \newline
+\noindent Further analysis of optimal thrust arcs throughout the duration of the orbital transfer is computed within MATLAB.
+The transfer is broken down into its three distinct components: the first thrust arc, the coasting arc, and the second thrust arc. 
+A set of $r$ and $\theta$ values throughout these three durations are joined together and used to create a polar plot of the given particle's transfer
+solution. Results of these computations can be seen in Fig. (\ref{fig:Tarc-B2}). \newline
 
 \subsection{Thrust Angles}
 
-\noindent Analysis of the finite thrust transfer problem yields optimal thrust-pointing-angle time history for a given transfer. 
+\noindent Analysis of the finite thrust transfer problem yields the optimal thrust-pointing-angle time history for a given transfer. 
 Utilizing Eq. (\ref{delta_eq}) the thrust angle $\delta$ is computed for both the first and second thrust arcs. MATLAB is then used
 to graphically model the thrust angle as a function of various quasi-optimal solutions. These results are seen in 
-(\ref{fig:thrustAnglesB2}). \newline
+Fig. (\ref{fig:thrustAnglesB2}). \newline
 
 \subsection{Rehyrdration}
 
-\noindent \textit{Rehydration} is this thesis' term for the resetting of a percentage of the particle swarm under population stagnation.
-This method seeks to expand the search space explored throughout the duration of the algorithm in pursuit of an optimal solution. Certain
-stagnation criteria are defined to aid in stagnation determination. To quantify population diversity, the algorithm measures the average
-percentage change of $J$, deemed $\delta_J$, 
+\noindent This thesis also considered the problem of limiting swarm stagnation.
+\textit{Rehydration} is this thesis' term for the resetting of a percentage of the population under premature convergence.
+This method seeks to expand the search space explored throughout the duration of the algorithm. \newline
+
+\noindent Certain stagnation criteria are defined to aid in stagnation determination. To quantify population diversity, the algorithm measures the average
+percentage change of $J$, deemed $\delta_{Javg}$, over a pre-defined previous number of iterations, $\eta_{iter}$. The critical 
+$\delta_{Javg}$ value for stagnation is pre-defined as $\delta_{Jcrit}$.  If $\delta_{Javg} < \delta_{Jcrit}$, the swarm is considered
+stagnated and a portion of the population, $P_{r,\text{\%}}$, is reset. \newline
+
+\noindent Analysis of this rehydration technique focused on determining the effect the parameters $\eta_{iter}$, $\delta_{Jcrit}$,
+and $P_{r,\text{\%}}$ have on the solution. For each set of these parameters, the algorithm is ran 30 times and a $\bar{J}_{best}$
+computed. This $\bar{J}_{best}$ is then compared against a $\bar{J}_{best}$ from the result of 300 executions of the algorithm without
+the rehydration method. Results from these comparisons can be seen in Tables 
+(\ref{tab:rehydation-p25}, \ref{tab:rehydation-p33}, \ref{tab:rehydation-p50}).
+All \textit{rehydration} cases are ran with $P_{num} = 100$ and $I_{num} = 1000$ for the $\beta=2$ case.
+
+
 
 \section{C++ Single Threaded}
 \noindent Details about Boost libraries, timers, etc. go here

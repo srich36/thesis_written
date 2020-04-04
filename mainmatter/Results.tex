@@ -57,7 +57,7 @@
   \centering
   \begin{tabular}{lll|ll|ll}
     \toprule
-    \multirow{2}{*}{25\% Rehydration} &
+    \multirow{2}{*}{$P_{r,\text{\%}}$ = 25} &
       \multicolumn{2}{c}{$\delta_{Javg}$ \textless .1\%} &
       \multicolumn{2}{c}{$\delta_{Javg}$ \textless 1\%} &
       \multicolumn{2}{c}{$\delta_{Javg}$ \textless 5\%} \\
@@ -78,7 +78,7 @@
   \centering
   \begin{tabular}{lll|ll|ll}
     \toprule
-    \multirow{2}{*}{33\% Rehydration} &
+    \multirow{2}{*}{$P_{r,\text{\%}}$ = 33} &
       \multicolumn{2}{c}{$\delta_{Javg}$ \textless .1\%} &
       \multicolumn{2}{c}{$\delta_{Javg}$ \textless 1\%} &
       \multicolumn{2}{c}{$\delta_{Javg}$ \textless 5\%} \\
@@ -100,7 +100,7 @@
     \centering
     \begin{tabular}{lll|ll|ll}
       \toprule
-      \multirow{2}{*}{50\% Rehydration} &
+      \multirow{2}{*}{$P_{r,\text{\%}} = 50$} &
         \multicolumn{2}{c}{$\delta_{Javg}$ \textless .1\%} &
         \multicolumn{2}{c}{$\delta_{Javg}$ \textless 1\%} &
         \multicolumn{2}{c}{$\delta_{Javg}$ \textless 5\%} \\
@@ -125,9 +125,9 @@
 %it in the code
 \begin{table}[H]
     \centering
-    \begin{tabular}{@{}llll@{}}
+    \begin{tabular*}{.5\textwidth}{c @{\extracolsep{\fill}} cc}
     \toprule
-    \textbf{Num Particles} & \textbf{Num Iterations} & \textbf{Time (s)} \\ \midrule
+    \bm{$P_{num}$} & \bm{$I_{num}$} & \textbf{Time (s)} \\ \midrule
     25                        & 250            & 30.527   \\
     25                        & 500            & 39.15    \\
     25                        & 1000           & 68.88    \\
@@ -143,7 +143,7 @@
     200                      & 250            & 157.061  \\
     200                      & 500            & 251.575  \\
     200                      & 1000           & 457.55   \\ \bottomrule
-    \end{tabular}
+    \end{tabular*}
     \caption{MATLAB Numerical Results - Wall Clock Time}
     \label{tab:MATLAB-speedup}
     \end{table}
@@ -156,7 +156,7 @@
     \centering
     \begin{tabular}{@{}lllll@{}}
     \toprule
-    \textbf{Num Particles} & \textbf{Num Iterations} & \textbf{Time (s)} & \bm{$n_{su\%}$} & \bm{$n_{su}$} \\ \midrule
+    \bm{$P_{num}$} & \bm{$I_{num}$} & \textbf{Time (s)} & \bm{$n_{su\%}$} & \bm{$n_{su}$} \\ \midrule
     25          & 250  & 1.732    & 94.32633406          & 17.62528868              \\
     25          & 500 & 2.39     & 93.89527458          & 16.38075314              \\
     25          & 1000 & 3.92     & 94.30894309          & 17.57142857              \\
@@ -183,7 +183,7 @@
     \centering
     \begin{tabular}{@{}llllll@{}}
     \toprule
-    \textbf{Num Particles} & \textbf{Num Iterations} & \textbf{Time (s)} & \bm{$n_{su\%}$} & \bm{$n_{sust\%}$} & \bm{$n_{su}$} \\ \midrule
+    \bm{$P_{num}$} & \bm{$I_{num}$} & \textbf{Time (s)} & \bm{$n_{su\%}$} & \bm{$n_{sust\%}$} & \bm{$n_{su}$} \\ \midrule
     25  & 250 & 1.78  & 94.16909621 & -2.771362587 & 17.15       \\
     25  & 500& 3.4   & 91.31545338 & -42.25941423 & 11.51470588 \\
     25  & 1000& 5.23  & 92.40708479 & -33.41836735 & 13.17017208 \\
