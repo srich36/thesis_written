@@ -8,7 +8,7 @@
 \section{Numerical Results}
 
 \noindent Implementation of the particle swarm optimization algorithm provides a way to solve
-for the optimal orbit transfer between two circular orbits. Table (\ref{tab:Numerical-Results}) shows
+for the optimal orbital transfer between two concentric circular orbits. Table (\ref{tab:Numerical-Results}) shows
 the results of these computations. The ratio $(\frac{m_f}{m_{0}})_h$ represents the final to initial mass
 ratio for a Hohmann transfer between orbits, whereas $\frac{m_f}{m_0}$ is the mass ratio of the algorithm 
 determined optimal solution.
@@ -31,7 +31,7 @@ determined optimal solution.
 
 \noindent For all values of $\beta$ in Table (\ref{tab:Numerical-Results}) the computed final to initial mass ratio is similar to the final to 
 initial mass ratio for a Hohmann transfer. For $\beta = 2$, this value exceeds its Hohmann
-counterpart. This indicates that this algorithm is effective in determining optimal orbit trajectories without
+counterpart. This indicates this algorithm is effective in determining optimal orbit trajectories, without
 requiring the impulsive thrust assumption as made in the Hohmann transfer calculations.
 
 \begin{figure}[H]
@@ -42,7 +42,7 @@ requiring the impulsive thrust assumption as made in the Hohmann transfer calcul
 
 \noindent Fig. (\ref{fig:Tarc-B2}) displays the numerically computed optimal transfer
 trajectory for $\beta = 2$. This yields insight into the optimal shape of the transfer orbit; a low 
-eccentricity, relatively short orbit path connects the $R_2 = 2 LU$ and $R_1 = 1 LU$ circular orbits.
+eccentricity, relatively short orbital path connects the $R_2 = 2 LU$ and $R_1 = 1 LU$ circular orbits.
 
   \begin{figure}[H]
     \includegraphics[width=\linewidth]{./jpgs/thrustArcB10.jpg}
@@ -52,7 +52,7 @@ eccentricity, relatively short orbit path connects the $R_2 = 2 LU$ and $R_1 = 1
 
 \noindent Analyzing Fig. (\ref{fig:Tarc-B10}) shows how the transfer orbit trajectory differs between two orbits 
 with higher $\beta = \frac{R_2}{R_1}$ values. In comparison to Fig. (\ref{fig:Tarc-B2}), the transfer trajectory has
-a much higher eccentricity and longer duration. In can thus be graphically and logically inferred that transfer orbits between orbits 
+a much higher eccentricity and longer duration. In can thus be graphically and logically inferred that transfers between orbits 
 with increasingly larger $\beta$ values are increasingly elliptical.
 
 \begin{figure}[H]
@@ -64,9 +64,9 @@ with increasingly larger $\beta$ values are increasingly elliptical.
 \noindent Particle swarm optimization's stochastic nature does not guarantee optimal results every 
 run, nor does it guarantee that particles with similar cost function values represent similar solutions. 
 Fig. (\ref{fig:thrustAnglesB2}) shows the thrust-pointing-angle time histories for both thrust arcs for 
-different particles each with quasi-optimal cost function values. While similar in cost function value, the 
-thrust-pointing-angle varies greatly for these three particles. Thus, it can be observed that within a search 
-space of 11 unknowns, near optimum solutions may vary greatly in their characteristics.
+different particles with quasi-optimal cost function values. While similar in cost function value, the 
+thrust-pointing-angle histories vary greatly for these parameter sets. Thus, it can be observed that, within a search 
+space of 11 unknowns, near optimal solutions may vary greatly in their characteristics.
 
 \begin{figure}[H]
 \includegraphics[width=\linewidth, height=13.5cm]{./jpgs/i50.jpg}
@@ -74,7 +74,7 @@ space of 11 unknowns, near optimum solutions may vary greatly in their character
 \label{fig:gBestPer50Iter}
 \end{figure}
 
-\noindent Fig. \ref{fig:gBestPer50Iter} demonstrates the evolution of the best solution
+\noindent Fig. (\ref{fig:gBestPer50Iter}) demonstrates the evolution of the best solution
 found throughout the first 50 iterations of the algorithm. Two key results can be ascertained 
 through this plot: First, the lowest found cost function value decreases rapidly over the first few
 iterations. Second, the swarm may appear to stagnate at a cost function value then make a jump to a
@@ -86,7 +86,7 @@ better solution. This notion makes it difficult to discern when a population has
     \label{fig:gBestPer500Iter}
     \end{figure}
 
-\noindent Fig. ()\ref{fig:gBestPer500Iter}) showcases the evolution of global best cost function value over a larger 
+\noindent Fig. (\ref{fig:gBestPer500Iter}) showcases the evolution of global best cost function values over a larger 
 range of iterations. This figure reinforces the observations from fig. (\ref{fig:gBestPer500Iter}). The rapid decrease 
 in cost function value is generally limited to the beginning iterations, and cost function value
 plateaus in the later stages of the algorithm. One notable portion is the significant decrease in the global best 
@@ -96,11 +96,17 @@ optimization algorithm, and once again illustrates how population stagnation can
 \section{Rehydration Results}
 
 \noindent \textit{Rehydration} is a method proposed within this thesis that resets a portion of the swarm if the population is estimated to 
-be stagnated. This method is designed to inject more randomness into the population to explore more of the solution search space, While
-simultaneously exploiting previously computed knowledge of the solution set. 
+be stagnated. This method is designed to inject more randomness into the population to explore more of the solution search space, 
+i.e. \textit{rehydrate}, while
+simultaneously exploiting previously computed knowledge of the solution set.
 
-\noindent Results within this section are derived from the variation of the three main rehydration parameters: $\delta_{Jcrit}$, $\eta_{iter}$,
-and $P_{r,\text{\%}}$. 
+\noindent Results within this section are derived from the variation of the three main \textit{rehydration} parameters: $\delta_{Jcrit}$, $\eta_{iter}$,
+and $P_{r,\text{\%}}$. Data from each combination of these parameters are presented.
+The quantity $\bar{J}_{best}$ represents the average cost function value of 30 runs with the specified \textit{rehydration} 
+parameters. The quantity $\Delta \bar{J}_{best,\text{\%}}$ is a measure of the percent change of $\bar{J}_{best}$ with \textit{rehydration} compared to 300 
+runs of the same $P_{num}$ and $I_{num}$ without the reset method.
+
+
 
 \begin{table}[H]
   \centering
@@ -123,6 +129,11 @@ and $P_{r,\text{\%}}$.
   \label{tab:rehydation-p25}
 \end{table}
 
+\noindent Table (\ref{tab:rehydation-p25}) shows the \textit{rehydration} results with $P_{r,\text{\%}}$ held constant
+at $25\%$. Every combination of parameters produces a major improvement over the standard particle swarm optimization algorithm,
+with percent improvement ranging from 31 to over 44 percent. In general, it can be observed that parameter sets 
+with lower values of $\delta_{Jcrit}$ perform better. 
+
 \begin{table}[H]
   \centering
   \begin{tabular}{lll|ll|ll}
@@ -144,6 +155,9 @@ and $P_{r,\text{\%}}$.
   \label{tab:rehydation-p33}
 \end{table}
 
+\noindent Data from Table (\ref{tab:rehydation-p33}) displays results with $P_{r,\text{\%}}$ set to 33\%. These data indicate similarly
+improved algorithm performance for any parameter combination. However, just as in Table (\ref{tab:rehydation-p25}), the best results
+originate from parameter combinations with $\delta_{Jcrit} = .1$.
 
 \begin{table}[H]
     \centering
@@ -166,9 +180,47 @@ and $P_{r,\text{\%}}$.
     \label{tab:rehydation-p50}
   \end{table}
 
-\section{Speedup}
+\noindent Table (\ref{tab:rehydation-p50}) showcases \textit{rehydration} performance with 
+$P_{r,\text{\%}}$ maintained at 50\%. Once again, every combination of parameters leads to 
+significant reduction in $\bar{J}_{best}$ relative to the \textit{non-rehydation} algorithm. 
+Within these results it can be observed that higher values of
+$\eta_{iter}$ give the best performance. Unlike Tables (\ref{tab:rehydation-p25}, \ref{tab:rehydation-p33}), 
+the value of $\delta_{Jcrit}$ appears to be less correlated to algorithm improvement.
+
+\section{Algorithm Benchmarking}
+
+\noindent Evaluation of a candidate solution to the finite thrust transfer problem requires significant computational resources.
+These potential solutions must be calculated for every particle throughout every iteration, leading to long algorithm execution cycles.
+Additionally, the inherent randomness of particle swarm optimization algorithms require them to be ran multiple times in the
+pursuit of a quasi-optimal solution. The combination of these factors prove execution time to be paramount, thus the benchmarking
+analysis done within this section. \newline
+
+\noindent To aid in the presentation of the benchmarking results the additional parameters $\eta_{su\%}$, $\eta_{su}$, and $\eta_{su,st\%}$ are defined. 
+These quantities relate the speedup of different implementations to the base MATLAB version, with all parameters held constant. 
+They are computed as
+
+\begin{equation}
+\eta_{su\%} = 100*\frac{\text{MATLAB Time} - \text{Execution Time}}{\text{MATLAB Time}}
+\label{eq:etaSUpercent}
+\end{equation}
+
+
+\begin{equation}
+  \eta_{su} = \frac{\text{MATLAB Time}}{\text{Execution Time}}
+  \label{eq:etaSU}
+  \end{equation}
+
+
+\begin{equation}
+  \eta_{su,st\%} = \frac{\text{C++ Single Threaded Time} - \text{Execution Time}}{\text{C++ Single Threaded Time}}
+  \label{eq:etaSUSTpercent}
+  \end{equation}
+
+\noindent These parameters serve to yield an insight into how algorithm performance differs between implementations
+with the variation of $P_{num}$ and $I_{num}$.
 
 \subsection{MATLAB}
+
 
 %Putting the H here ensures the table goes exactly where you put
 %it in the code
@@ -197,6 +249,10 @@ and $P_{r,\text{\%}}$.
     \label{tab:MATLAB-speedup}
     \end{table}
 
+\noindent Table (\ref{tab:MATLAB-speedup}) presents base MATLAB implementation data throughout the range of $P_{num}$ and $I_{num}$
+to be benchmarked. Execution time increases rather linearly with iteration number, but scales slower as $P_{num}$ grows. Results within
+this data set form the basis of the comparisons presented within Tables (\ref{tab:ST-speedup}, \ref{tab:OpenMP-speedup}).
+  
 \subsection{C++ Single Threaded}
 
 % Please add the following required packages to your document preamble:
@@ -226,13 +282,18 @@ and $P_{r,\text{\%}}$.
     \label{tab:ST-speedup}
     \end{table}
 
+\noindent Data within Table (\ref{tab:ST-speedup}) illustrate how the single threaded C++ implementation of 
+the particle swarm optimization algorithm compares to the MATLAB version. It is evident that the C++ version is
+clearly more performant, topping out at 96.1\% greater efficiency and 29.1 times faster than its
+MATLAB counterpart. An analysis of these results indicates that, in general, the improvement differential becomes 
+greater as $I_{num}$ increases.
 
-\subsection{C++ OpenMP}
+\subsection{C++ Parallelization}
 \begin{table}[H]
     \centering
     \begin{tabular}{@{}llllll@{}}
     \toprule
-    \bm{$P_{num}$} & \bm{$I_{num}$} & \textbf{Time (s)} & \bm{$n_{su\%}$} & \bm{$n_{sust\%}$} & \bm{$n_{su}$} \\ \midrule
+    \bm{$P_{num}$} & \bm{$I_{num}$} & \textbf{Time (s)} & \bm{$n_{su\%}$} & \bm{$n_{su,st\%}$} & \bm{$n_{su}$} \\ \midrule
     25  & 250 & 1.78  & 94.16909621 & -2.771362587 & 17.15       \\
     25  & 500& 3.4   & 91.31545338 & -42.25941423 & 11.51470588 \\
     25  & 1000& 5.23  & 92.40708479 & -33.41836735 & 13.17017208 \\
@@ -249,8 +310,25 @@ and $P_{r,\text{\%}}$.
     200 & 500 & 10.46 & 95.84219418 & 8.4303598    & 24.05114723 \\
     200 & 1000 & 22.42 & 95.09998907 & -6.457739791 & 20.40811775 \\ \bottomrule
     \end{tabular}
-    \caption{OpenMP Speedup Results - Wall Clock Execution Time}
+    \caption{\code{OpenMP} Speedup Results - Wall Clock Execution Time}
     \label{tab:OpenMP-speedup}
     \end{table}
+
+\noindent Table (\ref{tab:OpenMP-speedup}) displays the speedup of the \code{OpenMP} 
+implementation relative to the base C++ and MATLAB versions. At peak efficiency, this implementation
+achieves a 96.49\% speedup at 32.78 times faster than the MATLAB execution. However, under certain
+conditions, the parallelized version of the algorithm is slower than the single threaded version. Analysis 
+of the data suggests this occurs in cases with a lower $P_{num}$ and higher $I_{num}$. \newline
+
+\noindent The reasoning for this
+is likely two-fold: First, parallelization improves the algorithm during early iterations, where the numerical 
+integrations for many particles of the population do not converge, requiring greater computation. In these 
+instances, the improvements from parallelizing the particle evaluation step overcome the multi-threaded overhead
+for the iteration. Throughout the later iterations of the algorithm, where most numerical integrations converge quickly,
+the multi-threaded overhead outweighs the parallelization improvements. Second,
+as $P_{num}$ decreases, so does the benefit arising from parallelizing particle evaluation. Thread setup
+overhead, however, remains constant independent of $P_{num}$, leading to net decreased efficiency. One potential way 
+to maintain increased efficiency throughout may be to parallelize the process in early iterations and run the algorithm
+single threaded in later stages.
 
 \newpage
