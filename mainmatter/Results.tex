@@ -3,21 +3,36 @@
 % Contains formatting and content of chapter 4 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Results}
+
+
 \section{Numerical Results}
+
+\noindent Implementation of the particle swarm optimization algorithm provides a way to solve
+for the optimal orbit transfer between two circular orbits. Table (\ref{tab:Numerical-Results}) shows
+the results of these computations. The ratio $(\frac{m_f}{m_{0}})_h$ represents the final to initial mass
+ratio for a Hohmann transfer between orbits, whereas $\frac{m_f}{m_0}$ is the mass ratio of the algorithm 
+determined optimal solution.
+
 
 \begin{table}[H]
   \centering
   \begin{tabular}{@{}lllllll@{}}
   \toprule
-  $\beta$ & $\Delta t_1$ & $\Delta t_{co}$ & $\Delta t_2$ & $J$ & $m_f/m_0$ & $m_f/m_{0h}$ \\ \midrule
+  $\beta$ & $\Delta t_1$ & $\Delta t_{co}$ & $\Delta t_2$ & $J$ & $m_f/m_0$ & $(m_f/m_0)_h$ \\ \midrule
   2 & 0.671 & 5.229 & 0.411 & 1.082 & 0.567062 & 0.56614 \\
   4 & 1.044 & 11.834 & 0.442 & 1.487 & 0.405365 & 0.407642 \\
   6 & 1.178 & 20.006 & 0.413 & 1.59 & 0.3638 & 0.368367 \\
   8 & 1.25 & 24.87 & 0.403 & 1.652 & 0.339164 & 0.353299 \\
   10 & 1.282 & 41.08 & 0.365 & 1.647 & 0.34106 & 0.346603 \\ \bottomrule
   \end{tabular}
-  \label{tab:Numerical_Results}
+  \caption{Numerical results for the optimum orbital transfer for different $\beta$ values }
+  \label{tab:Numerical-Results}
   \end{table}
+
+\noindent For all values of $\beta$ in Table (\ref{tab:Numerical-Results}) the computed final to initial mass ratio is similar to the final to 
+initial mass ratio for a Hohmann transfer. For $\beta = 2$, this value exceeds its Hohmann
+counterpart. This indicates that this algorithm is effective in determining optimal orbit trajectories without
+requiring the impulsive thrust assumption as made in the Hohmann transfer calculations.
 
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{./jpgs/thrustArcB2.jpg}
@@ -25,6 +40,9 @@
     \label{fig:Tarc-B2}
   \end{figure}
 
+\noindent Fig. (\ref{fig:Tarc-B2}) displays the numerically computed optimal transfer
+trajectory for $\beta = 2$. This yields insight into the optimal shape of the transfer orbit; a low 
+eccentricity, relatively short orbit path connects the $R_2 = 2 LU$ and $R_1 = 1 LU$ circular orbits.
 
   \begin{figure}[H]
     \includegraphics[width=\linewidth]{./jpgs/thrustArcB10.jpg}
@@ -32,7 +50,10 @@
     \label{fig:Tarc-B10}
   \end{figure}
 
-
+\noindent Analyzing Fig. (\ref{fig:Tarc-B10}) shows how the transfer orbit trajectory differs between two orbits 
+with higher $\beta = \frac{R_2}{R_1}$ values. In comparison to Fig. (\ref{fig:Tarc-B2}), the transfer trajectory has
+a much higher eccentricity and longer duration. In can thus be graphically and logically inferred that transfer orbits between orbits 
+with increasingly larger $\beta$ values are increasingly elliptical.
 
 \begin{figure}[H]
 \includegraphics[width=\linewidth]{./jpgs/thrustAnglesB2.jpg}
@@ -40,27 +61,55 @@
 \label{fig:thrustAnglesB2}
 \end{figure}
 
+\noindent Particle swarm optimization's stochastic nature does not guarantee optimal results every 
+run, nor does it guarantee that particles with similar cost function values represent similar solutions. 
+Fig. (\ref{fig:thrustAnglesB2}) shows the thrust-pointing-angle time histories for both thrust arcs for 
+different particles each with quasi-optimal cost function values. While similar in cost function value, the 
+thrust-pointing-angle varies greatly for these three particles. Thus, it can be observed that within a search 
+space of 11 unknowns, near optimum solutions may vary greatly in their characteristics.
+
 \begin{figure}[H]
 \includegraphics[width=\linewidth, height=13.5cm]{./jpgs/i50.jpg}
 \caption{Global Best J Value Per Iteration: 100 Particles over 50 iterations}
 \label{fig:gBestPer50Iter}
 \end{figure}
 
+\noindent Fig. \ref{fig:gBestPer50Iter} demonstrates the evolution of the best solution
+found throughout the first 50 iterations of the algorithm. Two key results can be ascertained 
+through this plot: First, the lowest found cost function value decreases rapidly over the first few
+iterations. Second, the swarm may appear to stagnate at a cost function value then make a jump to a
+better solution. This notion makes it difficult to discern when a population has truly stagnated. 
+
 \begin{figure}[H]
     \includegraphics[width=\linewidth, height=13.5cm]{./jpgs/i500.jpg}
     \caption{Global Best J Value Per Iteration: 110 Particles over 500 iterations}
     \label{fig:gBestPer500Iter}
     \end{figure}
+
+\noindent Fig. ()\ref{fig:gBestPer500Iter}) showcases the evolution of global best cost function value over a larger 
+range of iterations. This figure reinforces the observations from fig. (\ref{fig:gBestPer500Iter}). The rapid decrease 
+in cost function value is generally limited to the beginning iterations, and cost function value
+plateaus in the later stages of the algorithm. One notable portion is the significant decrease in the global best 
+value for run four following over 300 iterations. This event demonstrates the inherent randomness of the particle swarm 
+optimization algorithm, and once again illustrates how population stagnation can be difficult to predict.
+
 \section{Rehydration Results}
+
+\noindent \textit{Rehydration} is a method proposed within this thesis that resets a portion of the swarm if the population is estimated to 
+be stagnated. This method is designed to inject more randomness into the population to explore more of the solution search space, While
+simultaneously exploiting previously computed knowledge of the solution set. 
+
+\noindent Results within this section are derived from the variation of the three main rehydration parameters: $\delta_{Jcrit}$, $\eta_{iter}$,
+and $P_{r,\text{\%}}$. 
 
 \begin{table}[H]
   \centering
   \begin{tabular}{lll|ll|ll}
     \toprule
     \multirow{2}{*}{$P_{r,\text{\%}}$ = 25} &
-      \multicolumn{2}{c}{$\delta_{Javg}$ \textless .1\%} &
-      \multicolumn{2}{c}{$\delta_{Javg}$ \textless 1\%} &
-      \multicolumn{2}{c}{$\delta_{Javg}$ \textless 5\%} \\
+      \multicolumn{2}{c}{$\delta_{Jcrit} = .1\%$  } &
+      \multicolumn{2}{c}{$\delta_{Jcrit} =  1\%$} &
+      \multicolumn{2}{c}{$\delta_{Jcrit} = 5\%$} \\
       \cmidrule{2-7}
     & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ \\
     \midrule
@@ -79,9 +128,9 @@
   \begin{tabular}{lll|ll|ll}
     \toprule
     \multirow{2}{*}{$P_{r,\text{\%}}$ = 33} &
-      \multicolumn{2}{c}{$\delta_{Javg}$ \textless .1\%} &
-      \multicolumn{2}{c}{$\delta_{Javg}$ \textless 1\%} &
-      \multicolumn{2}{c}{$\delta_{Javg}$ \textless 5\%} \\
+      \multicolumn{2}{c}{$\delta_{Jcrit} = .1\%$ } &
+      \multicolumn{2}{c}{$\delta_{Jcrit} = 1\%$ } &
+      \multicolumn{2}{c}{$\delta_{Jcrit} = 5\%$ } \\
       \cmidrule{2-7}
     & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ \\
     \midrule
@@ -101,9 +150,9 @@
     \begin{tabular}{lll|ll|ll}
       \toprule
       \multirow{2}{*}{$P_{r,\text{\%}} = 50$} &
-        \multicolumn{2}{c}{$\delta_{Javg}$ \textless .1\%} &
-        \multicolumn{2}{c}{$\delta_{Javg}$ \textless 1\%} &
-        \multicolumn{2}{c}{$\delta_{Javg}$ \textless 5\%} \\
+        \multicolumn{2}{c}{$\delta_{Jcrit} = .1\%$ } &
+        \multicolumn{2}{c}{$\delta_{Jcrit} = 1\%$ } &
+        \multicolumn{2}{c}{$\delta_{Jcrit} = 5\%$ } \\
         \cmidrule{2-7}
       & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ & $\bar{J}_{best}$ & $\Delta \bar{J}_{best,\text{\%}}$ \\
       \midrule

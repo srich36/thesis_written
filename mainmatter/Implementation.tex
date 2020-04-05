@@ -74,7 +74,8 @@ This method seeks to expand the search space explored throughout the duration of
 \noindent Certain stagnation criteria are defined to aid in stagnation determination. To quantify population diversity, the algorithm measures the average
 percentage change of $J$, deemed $\delta_{Javg}$, over a pre-defined previous number of iterations, $\eta_{iter}$. The critical 
 $\delta_{Javg}$ value for stagnation is pre-defined as $\delta_{Jcrit}$.  If $\delta_{Javg} < \delta_{Jcrit}$, the swarm is considered
-stagnated and a portion of the population, $P_{r,\text{\%}}$, is reset. \newline
+stagnated and a portion of the population, $P_{r,\text{\%}}$, is reset. This resetting does not affect the particle's knowledge of its
+historical best set of parameters, nor the knowledge of the historically computed global best solution for a given run.\newline
 
 \noindent Analysis of this rehydration technique focuses on determining the effect the parameters $\eta_{iter}$, $\delta_{Jcrit}$,
 and $P_{r,\text{\%}}$ have on the solution. For each set of these parameters, the algorithm is ran 30 times and a $\bar{J}_{best}$
