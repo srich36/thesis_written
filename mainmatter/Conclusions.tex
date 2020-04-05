@@ -3,6 +3,60 @@
 % Contains formatting and content of chapter 5 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Conclusions and Recommendations for Future Work}
+
 \section{Conclusions}
+\noindent The finite thrust transfer problem models orbital transfers without
+impulsive velocity change assumptions. As such, it provides higher fidelity
+solutions for minimum propellant consumption maneuvers. An analysis of this problem
+can direct thrust angles on a currently orbiting spacecraft throughout the transfer arc.
+However, this algorithm requires significant time to confidently discover a quasi-optimal 
+solution. In many cases, the necessity of determining optimal transfer parameters has minimal
+advanced notice.
+Thus, reducing the algorithm runtime and increasing the probability of optimal 
+solution discovery is fundamental to enabling time-sensitive results. Significant improvements
+in these bottlenecks could potentially enable on-board computers to calculate these transfer 
+parameters autonomously. This thesis explores improvements to both of these barriers through algorithm 
+benchmarking and a swarm stagnation prevention technique deemed \textit{rehydration}. \newline
+
+\noindent While the particle swarm optimization algorithm runtime is inherently constrained by the 
+calculations it entails, optimizing memory transfer, caching, and computation can potentially speed up its
+execution. To explore this possibility, three different implementations of the algorithm were developed:
+single threaded MATLAB, single threaded C++, and parallel C++. Each implementation ran for the $\beta = 2$
+transfer over a range of $P_{num}$ and $I_{num}$ values. Results clearly indicated that C++ implementations 
+are over an order of magnitude faster, peaking at a multiple of 26 times single threaded, and 32 times faster
+parallelized. It can be observed that parallelizing the implementation improves efficiency throughout the
+beginning portion of the algorithm, but has overhead outweighing the benefits during the exploitation phase of
+particle swarm optimization. Toggling parallelization during program execution may allow for peak
+efficiency throughout. The results from this benchmarking clearly demonstrate a significant improvement in 
+algorithm performance. It is not unreasonable to consider real-time trajectory optimization maneuvers using 
+similar C++ implementations in the future. \newline
+
+\noindent The second problem this paper evaluates is increasing the probability of quasi-optimal solution 
+discovery. As a stochastic algorithm, particle swarm optimization is prone to swarm stagnation, where the 
+population prematurely converges on a non-optimal solution. \textit{Rehydration} is an attempt 
+to rectify this behavior, resetting some of the population upon stagnation determination to inject more randomness
+into the algorithm. \textit{Rehydration} results are tabulated for a series of the method's core parameters: $P_{r,\%}$,
+$\delta_{Jcrit}$, $\eta_{iter}$, and compared against the average of 300 runs sans the reset technique. For each 
+parameter combination, the \textit{rehydration} algorithm demonstrably improved the average solution discovered.
+This indicates that this method can improve the probability of quasi-optimal solution discovery, thus reducing the 
+amount of algorithm runs necessary to find optimal transfer parameters. In combination with C++ implementations, this significantly 
+improves the two bottlenecks preventing real-time trajectory optimization.
+
 \section{Recommendations For Future Work}
+
+\noindent The core of this thesis proposes methods to improve the overall effectiveness of particle swarm 
+optimization algorithms. While applied to the finite thrust transfer problem, their breadth is much further
+reaching; these techniques can be used to optimize the solutions to a
+wide variety of problems solved by computationally intensive particle swarm methods. Future work may be done in 
+generalizing the C++ and \textit{rehydration} implementations and abstracting them for easy configuration and use 
+in different problems. \newline
+
+\noindent Additionally, this paper's exploration of concurrent programming as an algorithm optimization method
+would benefit form a greater depth of research. As previously mentioned, developing an implementation with automatically
+toggling parallelization based on swarm convergence state could help maintain peek efficiency throughout.
+Other parallel implementations, namely graphical processing unit (GPU) programming, are also recommended to be considered. 
+GPUs benefit from an immensely high thread count, enough for a thread per particle, but add increased overhead in copying
+memory between host and device. An analysis of the tradeoffs between the increased multi-threaded efficiency and 
+increased memory overhead is yet to be seen.
+
 \newpage
