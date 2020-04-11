@@ -65,17 +65,7 @@ From Eq. (\ref{delta_eq}) the thrust angle $\delta$ is computed for both the fir
 to graphically model the thrust angle as a function of time for various quasi-optimal solutions. These results are seen in 
 Fig. (\ref{fig:thrustAnglesB2}). \newline
 
-\subsection{Rehyrdration}
-
-\noindent This thesis also considers the problem of limiting swarm stagnation.
-\textit{Rehydration} is this thesis' term for the resetting of a percentage of the population under premature convergence.
-This method seeks to expand the search space explored throughout the duration of the algorithm. \newline
-
-\noindent Certain stagnation criteria are defined to aid in stagnation determination. To quantify population diversity, the algorithm measures the average
-percentage change of $J$, deemed $\delta_{Javg}$, over a pre-defined previous number of iterations, $\eta_{iter}$. The critical 
-$\delta_{Javg}$ value for stagnation is pre-defined as $\delta_{Jcrit}$.  If $\delta_{Javg} < \delta_{Jcrit}$, the swarm is considered
-stagnated and a portion of the population, $P_{r,\text{\%}}$, is reset. This resetting does not affect the particle's knowledge of its
-historical best set of parameters, nor the knowledge of the historically computed global best solution for a given run.\newline
+\subsection{Rehydration}
 
 \noindent Analysis of this rehydration technique focuses on determining the effect the parameters $\eta_{iter}$, $\delta_{Jcrit}$,
 and $P_{r,\text{\%}}$ have on the solution. For each set of these parameters, the algorithm is ran 30 times and a $\bar{J}_{best}$

@@ -4,12 +4,105 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Problem Statement}
 
-\section{Problem Definition}
+\section{Particle Swarm Optimization Overview}
 
-This thesis analyzes the optimal finite thrust transfer between two circular orbits. A PSO approach is utlized to attempt
-to find and optimal solution. The development of this problem is derived from \citep{Pontani_Conway}. \newline
+\subsection{Algorithm Definition}
+\noindent Particle swarm optimization is a class of algorithm that employs statistical methods to locate optimal solutions 
+minimizing an objective function in the global search space. The algorithm was originally designed to model
+the behavior of flocks of birds and schools of fish but has since been adapted to solve a variety of mathematical problems.
+Inherently metaheuristic, particle swarm optimization requires no
+prior knowledge of the search space. \newline
 
-This transfer is developed with respect to an initial circular orbit of radius $R_1$ and a final circular orbit of radius $R_2$ subject to the conditions $R_1 > R_2$ where the parameter $\beta = R_2/R_1 > 1$. 
+\noindent Potential solutions for particle swarm optimization algorithms exist within an $n$ dimensional space corresponding to the number of unknown parameter values. 
+The algorithm consists of a swarm of particles, each initially containing randomly assigned values in the search space for each unknown
+parameter. These parameter values are referred to as a particles position, with each parameter having a corresponding velocity. A given number of iterations is set, in which
+each particle is evaluated for its fitness as defined by the objective function $J$. Following each iteration, every particles' parameters' position are updated with its velocity terms,
+and velocity updated according to
+\begin{enumerate}
+    \item How far each of the particle's parameters differs from the global best particle ever recorded's parameters
+    \item How far each of the particle's parameters differs from the parameters of its historical personal best values
+    \item Its current velocity, where velocity refers to the rate of change of a particle's position in the search space per iteration
+\end{enumerate}
+
+\noindent This process continues for the set number of iterations. The global best particle, i.e. set of unknown parameters, found 
+within the PSO algorithm is the discovered solution. Psuedocode for the algorithm is as follows
+
+\begin{algorithm}[H]
+    \caption{General PSO Algorithm}
+    \begin{algorithmic}
+    
+    \STATE Set Lower and Upper bounds on position and velocity
+    \FOR{ \text{\emph{particle }} \text{ \textbf{in} \emph{Swarm}}}
+    \STATE Assign initial position values for each particle
+    \ENDFOR
+    \FOR{ \text{\emph{iteration}} \text{ \textbf{in} \emph{Num Iterations}}}
+    \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
+    \STATE Evaluate objective function $J$
+    \ENDFOR
+    \STATE Record best set of parameters each particle has achieved $\leftarrow pBest$
+    \STATE Record best overall position as global best $\leftarrow gBest$
+    \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
+    \STATE Update particle velocity based on $pBest, gBest$, and current velocity
+    \IF{$v_i(k) < $ velocity lower bound}
+    \STATE $v_i(k) = $ velocity lower bound
+    \ELSIF{$v_i(k) > $ velocity upper bound}
+    \STATE $v_i(k) = $ velocity upper bound
+    \ENDIF
+    \STATE Update particle Position
+    \IF{$p_i(k) < $ position lower bound}
+    \STATE $p_i(k) = $ position lower bound
+    \STATE $v_i(k) = 0$
+    \ELSIF{$p_i(k) > $ position upper bound}
+    \STATE $p_i(k) = $ position upper bound
+    \STATE $v_i(k) = 0$
+    \ENDIF
+    \ENDFOR
+    \ENDFOR
+    \STATE Use $gBest$ as solution
+    \end{algorithmic}
+    \label{alg:PSOGeneral}
+
+\end{algorithm}
+
+\subsection{Algorithm Challenges}
+
+\noindent Particle swarm optimization imposes no requirements on the solution search space. 
+Thus, a variety of local minima may exist, potentially leading to localized minima solution convergence. As such, globally optimal solutions are never guaranteed.
+This requires running the algorithm many times to increase the probability of finding a near-optimum solution.
+For many problems, this requires large computational efforts. Reducing particle swarm optimization runtime
+allows for more runs in a shorter duration, 
+thus probabilistically increasing the chance of a quasi-optimal solution discovery in a lessened time span.
+This opportunity is one of the core concepts explored within this thesis.  \newline
+
+
+
+\section{Speedup Test Case Problem Selection} \label{problemSelection}
+
+\noindent To gauge the effectiveness of execution time minimization methods a computationally complex problem is 
+necessary. A problem with larger runtimes allows for the effective benchmarking of these reduction strategies,
+and presents a non-trivial application of the proposed techniques.\newline
+
+\noindent These criteria make the finite thrust arc problem an apt test case for speedup benchmarking. 
+Particles within this problem require lots of execution time for two main reasons
+
+\begin{enumerate}
+    \item Each particle requires two separate numerical integrations, one for each thrust arc
+    \item Numerical integrations for many potential solutions within the global search space do not converge.
+    This requires drastically reduced integration step sizes and massively increases computational complexity. 
+\end{enumerate}
+
+\noindent Additionally, this problem consists of a non-trivial 11 unknowns. This broad 11 dimensional search space necessitates 
+a comparatively population
+in the search for optimal values. The combination of complex solution evaluation with large swarm sizes make the problem explored within
+this thesis sufficient for evaluating potential speedup methods.
+
+
+\section{Finite Thrust Problem Definition}
+
+\noindent This thesis analyzes the optimal finite thrust transfer between two circular orbits. A PSO approach is utlized to attempt
+to find an optimal solution. The development of this problem is derived from \citep{Pontani_Conway}. \newline
+
+\noindent This transfer is developed with respect to an initial circular orbit of radius $R_1$ and a final circular orbit of radius $R_2$ subject to the conditions $R_1 > R_2$ where the parameter $\beta = R_2/R_1 > 1$. 
 The inertial reference frame selected for this problem definition is centered at the attracting body. The corresponding coordinate frame definition is as follows: The $x$ axis is aligned with the spacecraft at the initial time $t_0$ and the $y$ axis is located in the orbital plane.
 The $z$ axis is determined by the right hand rule of these two basis axes. Within this problem $v_r$ denotes the spacecraft radial velocity, $v_\theta$ the horizontal component of velocity, $r$ the radius, and $\zeta$ the angular displacement from the $x$ axis. The gravitational
 parameter of the attracting body is $\mu_B$. \newline
@@ -26,7 +119,7 @@ v_r(t_0) = 0  \quad  v_\theta(t_0) = \sqrt{\mu_B/R_1} \quad r(t_0) = R_1 \quad \
     \label{final_conditions}
 \end{equation}
 
-The problem assumes a transfer trajectory of an initial thrust arc, followed by a coasting arc, and ending with a second thrust arc. 
+\noindent The problem assumes a transfer trajectory of an initial thrust arc, followed by a coasting arc, and ending with a second thrust arc. 
 Optimization of this problem corresponds to determining the thrust pointing angle function corresponding to the minimization of propellant consumption 
 subject to the constraints of Eq. (\ref{final_conditions}).\newline
 
@@ -37,7 +130,7 @@ subject to the constraints of Eq. (\ref{final_conditions}).\newline
     \item Each thrust arc pointing angle is represented as a third-degree polynomial as a function of time.
 \end{enumerate}
 
-$T$ and $c$ are used to represent the spacecraft thrust level and effective exhaust velocity respectively. The previous assumptions
+\noindent $T$ and $c$ are used to represent the spacecraft thrust level and effective exhaust velocity respectively. The previous assumptions
 indicate that the thrust-to-mass ratio has the form
 
 \begin{equation}
@@ -68,7 +161,7 @@ The state space equations of motion for the spacecraft are
     \label{xidot_eom}
 \dot{\xi} = \dfrac{v_\theta}{r}
 \end{equation}
-where $\dfrac{T}{m}$ is given in E.q.(\ref{Toverm}) and $\delta$ is the thrust pointing angle represent by a
+where $\dfrac{T}{m}$ is given in Eq.(\ref{Toverm}) and $\delta$ is the thrust pointing angle represent by a
 third-order polynomial of time. The state vector used in this problem is $[x_1 \; x_2 \; x_3 \; x_4]^T = [ v_r \; v_\theta \; r \; \xi ]^T$. \linebreak
 
 \noindent The thurst pointing angle $\delta$ is defined as 
@@ -83,9 +176,9 @@ third-order polynomial of time. The state vector used in this problem is $[x_1 \
 \end{equation} \linebreak
 
 \noindent The optimum thrust pointing angle coefficients $\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$
-and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3\}$ are determined by PSO. \newline
+and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3\}$ are parameters determined by particle swarm optimization. \newline
 
-During the coasting arc the problem consists of a Keplerian orbit. As such, the semimajor axis $a$ and eccentricity $e$ of the coasting arc can be computed as
+\noindent During the coasting arc the problem consists of a Keplerian orbit. As such, the semimajor axis $a$ and eccentricity $e$ of the coasting arc can be computed as
 
 \begin{equation}
 a = \dfrac{\mu_Br_1}{2\mu_B - r_1(v_{r1}^2+v_{\theta1}^2)}
@@ -150,7 +243,7 @@ r_2 = \dfrac{a(1-e^2)}{1+e\cos{f_2}}
 
 \noindent Integrating the second thrust arc with these initial conditions over the second thrust arc time duration with yield the final orbital characteristics. \newline
 
-This system depends on the eight coefficients representing the thrust pointing angles of the first and second thrust arcs, 
+\noindent This system depends on the eight coefficients representing the thrust pointing angles of the first and second thrust arcs, 
 $\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$ and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3 \}$ respectively, and the time intervals for the first coast arc
 $\Delta t_1 \overset{\Delta}{=} t_1$, the coasting arc, $\Delta t_{co}$, and the second coast arc $\Delta t_2 \overset{\Delta}{=} t_f-t_2 $. These 11 unknowns are sought to be chosen to minimize the objective function 
 
@@ -159,7 +252,7 @@ J = \Delta t_1 + \Delta t_2
 \label{J}
 \end{equation}
 
-\noindent Optimizing the unknown coefficients to minimize \ref{J} corresponds to the minimization of propellant consumption. Minimizing propellant consumption
+\noindent Optimizing the unknown coefficients to minimize $J$ corresponds to the minimization of propellant consumption. Minimizing propellant consumption
 results in a maximization of the final-to-initial mass ratio given by 
 
 \begin{equation}
@@ -169,15 +262,15 @@ results in a maximization of the final-to-initial mass ratio given by
 
 \noindent The coasting arc is required to be elliptic, therefore any particles with $a \leq 0$ are assigned an infinite value. \newline
 
-Since $\Delta t_{co}$ can be computed using $\Delta E$, the eccentric anomaly variation replaces the coasting time interval in the 
-problem's 11 unkown parameters. Each particle in the swarm thus consists of the following
+\noindent Since $\Delta t_{co}$ can be computed using $\Delta E$, the eccentric anomaly variation replaces the coasting time interval in the 
+problem's 11 unknown parameters. Each particle in the swarm thus consists of the following
 
 \begin{equation}
 \chi = [ \zeta_0 \quad \zeta_1 \quad \zeta_2 \quad \zeta_3 \quad \nu_0 \quad \nu_1 \quad \nu_2 \quad \nu_3 \quad \Delta t_1 \quad \Delta E \quad \Delta t_2 ]^T
 \label{particleUnkowns}
 \end{equation}
 
-To enforce the constraints set forth in Eq. (\ref{final_conditions}) three penalty terms are added to the objective function Eq. (\ref{J}).
+\noindent To enforce the constraints set forth in Eq. (\ref{final_conditions}) three penalty terms are added to the objective function Eq. (\ref{J}).
 
 \begin{equation}
 \tilde{J} = \Delta t_1 + \Delta t_2 + \sum_{k=1}^3 \alpha_k|d_k| 
@@ -205,7 +298,7 @@ d_3 = r(t_f)-R_2
 
 \section{Canonical Units Definition}
 
-This problem employs a canonical set of units to simplify the analysis. One distance unit (DU) is defined as the radius of the initial orbit,
+\noindent This problem employs a canonical set of units to simplify the analysis. One distance unit (DU) is defined as the radius of the initial orbit,
 and one time unit (TU) definted such that $\mu_B = 1 \frac{DU^3}{TU^2}$. The unknown coefficients are thus sought within the following ranges
 
 \begin{equation}
@@ -218,72 +311,10 @@ and one time unit (TU) definted such that $\mu_B = 1 \frac{DU^3}{TU^2}$. The unk
 
 \noindent The effective exhaust velocity $c$ is set to $0.5 \frac{DU}{TU^2}$ and the initial thrust-to-mass ratio set to $0.2 \frac{DU}{TU^2}$. 
 
-\section{PSO Algorithm}
 
-\subsection{General Overview}
-Particle Swarm Optimization is a class of algorithm that employs statistical methods to attempt to locate optimal solutions 
-that minimize an objective function, often denoted $J$, in the global search space. The algorithm was originally designed to model
-the behavior of flocks of birds or schools of fish but has been adapted to solve a variety of mathematical problems. PSO is an effective method in scenarios where no analytical solution can be found and the optimal solution is unknown. \newline
+\section{Finite Thrust Arc Implementation}
 
-The potential solutions for PSO algorithms exist within an $n$ dimensional space where $n$ represents the number of unknown parameter values. Within this $n$ dimensional space there is likely to 
-be a variety of local minima in which the swarm, and thus solution, may converge on. As such, one is not guaranteed to find an optimal solution to a problem with a PSO algorithm. Indeed, in many
-cases it is impossible to know what the true global optimum is. This requires running the algorithm many times to increase the probability of finding a near-optimum solution. 
-For many problems, this may require large computational efforts and extensive time. Reducing the time required for the execution of PSO algorithms allows more runs in a shorter duration,
-thus probabilistic increasing the chance of a near-optimal solution quicker. This opportunity was one of the core concepts explored within this thesis.  \newline
-
-The algorithm consists of a swarm of particles, each initially containing randomly assigned values in the search space for each unknown
-parameter. These parameter values are referred to as a particles position, with each parameter also having a corresponding velocity. A given number of iterations is set, each in which
-each particle is evaluated for its fitness as defined by the objective function $J$. Following each iteration, each of the particles' parameters' position is updated with its velocity terms,
-and velocity updated based on a variety of factors
-\begin{enumerate}
-    \item How far each of the particle's parameters differs from the global best particle ever recorded's parameters
-    \item How far each of the particle's parameters differs from the parameters of its historical personal best values
-    \item Its current velocity, where velocity refers to the rate of change of a particle's position in the search space per iteration
-\end{enumerate}
-
-\noindent This process continues for the set number of iterations. The global best particle, i.e. set of unknown parameters, found 
-within the PSO algorithm is thus the solution. Psuedocode for the algorithm is as follows
-
-\begin{algorithm}[H]
-    \caption{General PSO Algorithm}
-    \begin{algorithmic}
-    
-    \STATE Set Lower and Upper bounds on position and velocity
-    \FOR{ \text{\emph{particle }} \text{ \textbf{in} \emph{Swarm}}}
-    \STATE Assign initial position values for each particle
-    \ENDFOR
-    \FOR{ \text{\emph{iteration}} \text{ \textbf{in} \emph{Num Iterations}}}
-    \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
-    \STATE Evaluate objective function $J$
-    \ENDFOR
-    \STATE Record best set of parameters each particle has achieved $\leftarrow pBest$
-    \STATE Record best overall position as global best $\leftarrow gBest$
-    \FOR {\text{\emph{particle}} \text{ \textbf{in}  \emph{Swarm}}}
-    \STATE Update particle velocity based on $pBest, gBest$, and current velocity
-    \IF{$v_i(k) < $ velocity lower bound}
-    \STATE $v_i(k) = $ velocity lower bound
-    \ELSIF{$v_i(k) > $ velocity upper bound}
-    \STATE $v_i(k) = $ velocity upper bound
-    \ENDIF
-    \STATE Update particle Position
-    \IF{$p_i(k) < $ position lower bound}
-    \STATE $p_i(k) = $ position lower bound
-    \STATE $v_i(k) = 0$
-    \ELSIF{$p_i(k) > $ position upper bound}
-    \STATE $p_i(k) = $ position upper bound
-    \STATE $v_i(k) = 0$
-    \ENDIF
-    \ENDFOR
-    \ENDFOR
-    \STATE Use $gBest$ as solution
-    \end{algorithmic}
-    \label{alg:PSOGeneral}
-
-\end{algorithm}
-
-\subsection{Finite Thrust Arc Implementation}
-
-The Finite Thrust Arc problem explored within this thesis was implemented using the 11 unknown parameters in equation Eq. (\ref{particleUnkowns})
+\noindent The finite thrust arc problem explored within this thesis was implemented using the 11 unknown parameters in Eq. (\ref{particleUnkowns})
 and corresponding objective function Eq. (\ref{JwithPenalty}). Position and velocity bounds for the PSO algorithm are given by Eq. (\ref{particleBounds}). Particle position updating uses 
 the standard form
 
@@ -338,26 +369,11 @@ c_i = \dfrac{(1+rand(0,1))}{2} \quad c_c = 1.49445(rand(0,1)) \quad c_s = 1.4944
 
 \end{algorithm}
 
-\section{Reducing Computational Time}
 
-\subsection{Problem Selection} \label{problemSelection}
-The finite thrust arc problem explored within this thesis was chosen as a benchmark as a PSO algorithm requiring 
-lots of computational resources. Particles within this problem require lots of execution time for two main reasons
+\section{Parallelization}
 
-\begin{enumerate}
-    \item Each particle requires two numerical integrations, one for the initial thrust arc and one for the second
-    \item Many potential solutions within the global search space do not converge during these numerical integrations. This drastically reduces integrations
-    integration step sizes in an attempt to meet the specified integration tolerances, massively increasing the computational complexity. 
-\end{enumerate}
-
-Additionally, this problem required a non-trivial 11 unknowns. This broad 11 dimensional search space necessitates a comparatively large swarm population size
-in the search for optimal values. This combination of individual particles requiring lots of execution with the desired swarm population size makes the problem explored within this thesis
-was sufficient in evaluating potential speedup methods.
-
-\subsection{Parallelization}
-
-The conditions referenced within section \ref{problemSelection} make the finite thrust transfer problem a good candidate for parallelization.
-Within each iteration, each particle is evaluated for its value of the objective function $J$. This  contains the computationally heavy numerical integrations. Within this section of the PSO algorithm, each particle is evaluated independently. 
+\noindent The conditions referenced within section \ref{problemSelection} make the finite thrust transfer problem a good candidate for parallelization.
+Within each iteration, each particle is evaluated for its value of the objective function $J$. This  contains the computationally heavy numerical integrations. Within this section of the PSO algorithm each particle is evaluated independently. 
 As such, parallel processing can be used to evaluate multiple particles within the swarm simultaneously. Only after each iteration is complete and position and velocity updating occurs do the particles become dependent on each others' results. Since 
 the updating portion of the algorithm is not computationally expensive, a large potential benefit can be gained from paralellizing the inter-iteration computations. A simplified version of the parallelized algorithm is shown below.
 
@@ -376,5 +392,18 @@ the updating portion of the algorithm is not computationally expensive, a large 
     \end{algorithmic}
     \label{alg:PPSOpsuedocode}
 \end{algorithm}
+
+
+\section{Rehyrdration Definition}
+
+\noindent This thesis also considers the problem of limiting swarm stagnation.
+\textit{Rehydration} is this thesis' term for the resetting of a percentage of the population under premature convergence.
+This method seeks to expand the search space explored throughout the duration of the algorithm. \newline
+
+\noindent Certain stagnation criteria are defined to aid in stagnation determination. To quantify population diversity, the algorithm measures the average
+percentage change of $J$, deemed $\delta_{Javg}$, over a pre-defined previous number of iterations, $\eta_{iter}$. The critical 
+$\delta_{Javg}$ value for stagnation is pre-defined as $\delta_{Jcrit}$.  If $\delta_{Javg} < \delta_{Jcrit}$, the swarm is considered
+stagnated and a portion of the population, $P_{r,\text{\%}}$, is reset. This resetting does not affect the particle's knowledge of its
+historical best set of parameters, nor the knowledge of the historically computed global best solution for a given run.\newline
 
 \newpage
