@@ -5,7 +5,7 @@
 \chapter{Problem Implementation}
 \section{Overview}
 \noindent The finite thrust arc problem consists of 11 unknowns and requires two numerical integrations for each solution candidate within the
-particle swarm. Additionally, it necessitates a high absolute and relative tolerance when integrated with variable step sized integrators. These
+particle swarm. Additionally, it necessitates very small absolute and relative tolerances when integrated with variable step sized integrators. These
 components serve to make this problem a suitable benchmark for the performance of different implementations of the particle swarm optimization algorithm. \newline
 
 \noindent To maintain consistency between different implementation targets, the numerical integration algorithm, absolute and relative tolerance values,
@@ -17,7 +17,7 @@ AbsTol = 10^{-9} \quad \text{and} \quad RelTol = 10^{-9}
 \label{eq:tolerances}
 \end{equation}
 
-\noindent And the minimum step size as
+\noindent And the minimum step size set to the MATLAB default of
 
 \begin{equation}
     h_{min} = 7.105427*10^{-15}
@@ -30,14 +30,14 @@ to algorithm completion. File operations are not included within this measuremen
 \noindent The problem is benchmarked using the $\beta = 2$ case with various swarm sizes and iteration numbers. 
 Results from this benchmarking can be seen in Tables (\ref{tab:MATLAB-speedup}, \ref{tab:ST-speedup}, \ref{tab:OpenMP-speedup}). Unless otherwise 
 specified, all data within this thesis is computed as the average of 30 algorithm executions held constant at the given parameters. 
-All benchmarking is ran without any \textit{rehydration} methods.
+All benchmarking is run without any \textit{rehydration} methods.
 Numerical analysis is additionally performed on the $\beta=4,6,8 \text{ and } 10$ cases, though these solutions are not benchmarked for execution time.
 
 \section{MATLAB}
 
 \subsection{Integrator}
 
-\noindent MATLAB implements a fifth order Runge-Kutta Dormand Prince variable step sized integrator with the native \code{ODE45} function. \code{ODE45}
+\noindent MATLAB implements a fifth-order Runge-Kutta Dormand-Prince variable step-size integrator with the native \code{ODE45} function. \code{ODE45}
 defaults to a minimum step size of $h_{min}$ as given in Eq. (\ref{eq:min-step-size}). Additionally, \code{ODE45}
 presents configuration options for both $AbsTol$ and $RelTol$, utilizing the larger of the two values.
 Integrations for both thrust arcs are configured with the values given in Eq. (\ref{eq:tolerances}).
@@ -67,7 +67,7 @@ Fig. (\ref{fig:thrustAnglesB2}). \newline
 
 \subsection{Rehydration}
 
-\noindent Analysis of this rehydration technique focuses on determining the effect the parameters $\eta_{iter}$, $\delta_{Jcrit}$,
+\noindent Analysis of the rehydration technique focuses on determining the effect the parameters $\eta_{iter}$, $\delta_{Jcrit}$,
 and $P_{r,\text{\%}}$ have on the solution. For each set of these parameters, the algorithm is ran 30 times and a $\bar{J}_{best}$
 computed. This $\bar{J}_{best}$ is then compared against a $\bar{J}_{best}$ from the result of 300 executions of the algorithm without
 the rehydration method. Results from these comparisons can be seen in Tables 
@@ -90,8 +90,8 @@ for high performance C++.
 \subsection{Integrator}
 
 \noindent \code{Boost} provides \code{odeint}, a library for solving ordinary differential equations. Within \code{odeint}
-there exists a fifth order Runge-Kutta Dormand Prince variable
-step sized integrator. This implements the same algorithm as \code{ODE45} and thus was chosen as the integrator for both finite
+there exists a fifth-order Runge-Kutta Dormand-Prince variable
+step-size integrator. This implements the same algorithm as \code{ODE45} and thus was chosen as the integrator for both finite
 thrust arcs. The method exposes references to the system state which is updated and overwritten at each successive time step. Absolute
 and relative tolerance options are provided, and are set to the values specified in Eq. (\ref{eq:tolerances}). \newline
 
