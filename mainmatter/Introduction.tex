@@ -13,7 +13,7 @@ The algorithm was originally designed to simulate social behavior within a flock
 requiring numerical algorithms. Particle swarm optimization consists of a set of possible solutions, referred to as particles, which then explore the solution search space due to
 computed velocity update parameters. The velocity change of each particle per algorithm iteration depends on the three things: the particle's best historical position, the best historical
 solution within the entire solution set (referred to as the swarm), and the particle's current velocity. In forming the algorithm in this way, many particle swarm optimization techniques 
-require no prior knowledge of the solution space and do not require the problem to be differentiable. \newline
+require no prior knowledge of the solution space and do not necessitate the problem to be differentiable. \newline
 
 \noindent Particle swarm optimization's nature as a metaheuristic algorithm has lent itself to the application of various problems,
 including structural design optimization, responsive theater maneuvers, corrosion fatigue, and path-constrained minimal time satellite reorientation
@@ -33,19 +33,20 @@ dubbed \textit{rehydration}, in which a portion of the population is randomly re
 
 \noindent Impulsive thrust approximations are used to simplify the computations used in modeling orbital transfers under high-thrust assumptions.
 More rigorous analysis of orbital transfers, in correspondence with actual spacecraft maneuvers, requires thrust to be finite. Numerous algorithms have been
-proposed to model these finite thrust arcs. Grund and Pitkin proposed an iterative method for computing the optimal trajectory requiring the impulsive transfer trajectory as
+proposed to model these finite thrust arcs. Grund and Pitkin proposed an iterative method for computing the optimal thrust arcs requiring the impulsive transfer trajectory as
 an initial solution \citep{Fthrust1}. Further literature introduced an indirect solution applying optimal control theory using nonlinear programming from an initially guessed
 solution \citep{Fthrust2}. Pontani and Conway then proposed a stochastic algorithm, particle swarm optimization, for the computation of the optimal transfer trajectory \citep{Pontani_Conway}. The problem was formulated as 
 a system of 11 unknown parameters and modeled with an objective function aimed at minimizing fuel consumption
 and solution error. Consisting of two numerical integrations and requiring lengthy computation time, this finite thrust 
-method was thus selected as a test case for minimizing particle swarm optimization algorithm runtimes.
+method was thus selected as this thesis' test case for minimizing particle swarm optimization algorithm runtimes.
 
 
 \section{Thesis Outline}
 
-\noindent Chapter 2 of this thesis defines the finite thrust transfer problem to be analyzed. This chapter introduces the development of the problem
-and the particle swarm optimization method designed to explore its solutions. Additionally, this chapter details the generalized paralellized particle swarm optimization algorithm.
+\noindent Chapter 2 of this thesis defines the generalized particle swarm optimization algorithm and its challenges. This chapter introduces the development of the finite thrust arc problem
+and the particle swarm optimization implementation designed to explore its solutions. Additionally, this chapter 
+details proposals to reduce both the algorithm runtime and the probability of premature swarm convergence.
 Chapter 3 then delves into the problem-specific implementations within MATLAB and C++. Included within
-this chapter are details on the parallelized C++ version of the algorithm. 
-Chapter 4 then details the results of these implementations, including speedup comparisons, and analysis of the \textit{rehydration} method.
+this chapter are details of the parallelized C++ version of the algorithm. 
+Chapter 4 then covers the results of these implementations, including speedup comparisons and analysis of the \textit{rehydration} method.
 Finally, chapter 5 draws conclusions from these results and offers recommendations for future research. 
