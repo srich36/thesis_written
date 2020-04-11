@@ -22,12 +22,12 @@ benchmarking and a swarm stagnation prevention technique deemed \textit{rehydrat
 calculations it entails, optimizing memory transfer, caching, and computation can potentially speed up its
 execution. To explore this possibility, three different implementations of the algorithm were developed:
 single threaded MATLAB, single threaded C++, and parallel C++. Each implementation ran for the $\beta = 2$
-transfer over a range of $P_{num}$ and $I_{num}$ values. Results clearly indicated that C++ implementations 
+transfer over a range of $P_{num}$ and $I_{num}$ values. Results clearly indicate that C++ implementations 
 are over an order of magnitude faster, peaking at a multiple of 26 times single threaded, and 32 times faster
 parallelized. It can be observed that parallelizing the implementation improves efficiency throughout the
 beginning portion of the algorithm, but has overhead outweighing the benefits during the exploitation phase of
 particle swarm optimization. Toggling parallelization during program execution may allow for peak
-efficiency throughout. The results from this benchmarking clearly demonstrate a significant improvement in 
+efficiency throughout. The results from this benchmarking demonstrate a significant improvement in 
 algorithm performance. It is not unreasonable to consider real-time trajectory optimization maneuvers using 
 similar C++ implementations in the future. \newline
 
