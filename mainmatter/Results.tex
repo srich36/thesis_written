@@ -7,8 +7,7 @@
 
 \section{Numerical Results}
 
-\noindent Implementation of the particle swarm optimization algorithm provides a way to solve
-for the optimal orbital transfer between two concentric circular orbits. Table (\ref{tab:Numerical-Results}) shows
+\noindent A particle swarm optimization implementation solutions for the optimal orbital transfer between two concentric circular orbits. Table (\ref{tab:Numerical-Results}) shows
 the results of these computations. The ratio $(\frac{m_f}{m_{0}})_h$ represents the final to initial mass
 ratio for a Hohmann transfer between orbits, whereas $\frac{m_f}{m_0}$ is the mass ratio of the algorithm 
 determined optimal solution.
@@ -190,7 +189,7 @@ the value of $\delta_{Jcrit}$ appears to be less correlated to algorithm improve
 \section{Algorithm Benchmarking}
 
 \noindent Evaluation of a candidate solution to the finite thrust transfer problem requires significant computational resources.
-These potential solutions must be calculated for every particle throughout every iteration, leading to long algorithm execution cycles.
+These potential solutions must be calculated for every particle throughout each iteration, leading to long execution cycles.
 Additionally, the inherent randomness of particle swarm optimization algorithms require them to be ran multiple times in the
 pursuit of a quasi-optimal solution. The combination of these factors prove execution time to be paramount, thus the benchmarking
 analysis done within this section. \newline
