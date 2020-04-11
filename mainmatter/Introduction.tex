@@ -2,22 +2,11 @@
 % chapter1.tex                                 %
 % Contains formatting and content of chapter 1 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{Introduction and Historical Review}
+\chapter{Introduction and Literature Review}
 \newpage
 
-\section{Introduction and Literature Review}
 
-\subsection{Finite Thrust Transfer}
-
-\noindent Impulsive thrust approximations are used to simplify the computations used in modeling orbital transfers under high-thrust assumptions.
-More rigorous analysis of orbital transfers, in correspondence with actual spacecraft maneuvers, requires thrust to be finite. Numerous algorithms have been
-proposed to model these finite thrust arcs. Grund and Pitkin proposed an iterative method for computing the optimal trajectory requiring the impulsive transfer trajectory as
-an initial solution \citep{Fthrust1}. Further literature introduced an indirect solution applying optimal control theory using nonlinear programming from an initially guessed
-solution \citep{Fthrust2}. Pontani and Conway then proposed a stochastic algorithm, particle swarm optimization, for the computation of the optimal transfer trajectory \citep{Pontani_Conway}. The problem was formulated as 
-a system of 11 unknown parameters and modeled with an objective function aimed at minimizing fuel consumption
-and solution error. This thesis utilized this problem formation in further exploration of the finite thrust transfer problem.
-
-\subsection{Particle Swarm Optimization}
+\section{Particle Swarm Optimization}
 
 \noindent Since its introduction in 1995 by Kennedy and Eberhart \citep{Initial_PSO}, particle swarm optimization has had numerous implications in various aerospace fields and beyond.
 The algorithm was originally designed to simulate social behavior within a flock of birds but has since been adapted as a stochastic solution for problems
@@ -39,6 +28,17 @@ burden with the finer grain memory control synonymous with lower-level programmi
 diversity has been a research area of interest and has seen various approaches in stagnation determination and correction \citep{PSOstag1, PSOstag2}. This thesis introduces a new concept,
 dubbed \textit{rehydration}, in which a portion of the population is randomly reset when the population meets the specified stagnation criteria. Analysis of the effect of this
 \textit{rehydration} on the search for an optimal solution is explored and presented.
+
+\section{Finite Thrust Transfer}
+
+\noindent Impulsive thrust approximations are used to simplify the computations used in modeling orbital transfers under high-thrust assumptions.
+More rigorous analysis of orbital transfers, in correspondence with actual spacecraft maneuvers, requires thrust to be finite. Numerous algorithms have been
+proposed to model these finite thrust arcs. Grund and Pitkin proposed an iterative method for computing the optimal trajectory requiring the impulsive transfer trajectory as
+an initial solution \citep{Fthrust1}. Further literature introduced an indirect solution applying optimal control theory using nonlinear programming from an initially guessed
+solution \citep{Fthrust2}. Pontani and Conway then proposed a stochastic algorithm, particle swarm optimization, for the computation of the optimal transfer trajectory \citep{Pontani_Conway}. The problem was formulated as 
+a system of 11 unknown parameters and modeled with an objective function aimed at minimizing fuel consumption
+and solution error. Consisting of two numerical integrations and requiring lengthy computation time, this finite thrust 
+method was thus selected as a test case for minimizing particle swarm optimization algorithm runtimes.
 
 
 \section{Thesis Outline}
