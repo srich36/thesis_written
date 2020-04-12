@@ -254,8 +254,8 @@ r_2 = \dfrac{a(1-e^2)}{1+e\cos{f_2}}
 \noindent Integrating the second thrust arc with these initial conditions over the given time duration yields the final orbital characteristics. \newline
 
 \noindent This system depends on the eight coefficients representing the thrust pointing angles of the first and second thrust arcs, 
-$\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$ and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3 \}$ respectively, and the time intervals for the first coast arc
-$\Delta t_1 \overset{\Delta}{=} t_1$, the coasting arc $\Delta t_{co}$, and the second coast arc $\Delta t_2 \overset{\Delta}{=} t_f-t_2 $. 
+$\{\zeta_0 \; \zeta_1 \; \zeta_2 \; \zeta_3 \}$ and $\{\nu_0 \; \nu_1 \; \nu_2 \; \nu_3 \}$ respectively, and the time intervals for the first thrust arc
+$\Delta t_1 \overset{\Delta}{=} t_1$, the coasting arc $\Delta t_{co}$, and the second thrust arc $\Delta t_2 \overset{\Delta}{=} t_f-t_2 $. 
 The selection of these 11 unknowns is sought to minimize the objective function 
 
 \begin{equation}
@@ -384,9 +384,9 @@ c_i = \dfrac{(1+rand(0,1))}{2} \quad c_c = 1.49445(rand(0,1)) \quad c_s = 1.4944
 \section{Parallelization}
 
 \noindent The conditions referenced within section \ref{problemSelection} make the finite thrust transfer problem a good candidate for parallelization.
-Within each iteration, each particle is evaluated for its value of the objective function $J$. This  contains the computationally heavy numerical integrations. Within this section of the PSO algorithm each particle is evaluated independently. 
+Within each iteration, each particle is evaluated for its value of the objective function $J$. This  contains the computationally heavy numerical integrations. Within this section of the algorithm each particle is evaluated independently. 
 As such, parallel processing can be used to evaluate multiple particles simultaneously. Only after each iteration completes and position and velocity updating occurs do the particles become dependent on each others' results. Since 
-the swarm updating portion of the algorithm is not computationally expensive, a large potential benefit can be gained from paralellizing the inter-iteration computations. A simplified version of the parallelized algorithm is shown below.
+the swarm updating portion of the algorithm is not computationally expensive, a large potential benefit can be gained from parallelizing the inter-iteration computations. A simplified version of the parallelized algorithm is shown below.
 
 \begin{algorithm}[H]
     \caption{Simplified parallel PSO Pseudocode}
@@ -415,6 +415,6 @@ This method seeks to expand the search space explored throughout the duration of
 percentage change of $J$, deemed $\delta_{Javg}$, over a pre-defined previous number of iterations, $\eta_{iter}$. The critical 
 $\delta_{Javg}$ value for stagnation is pre-defined as $\delta_{Jcrit}$.  If $\delta_{Javg} < \delta_{Jcrit}$, the swarm is considered
 stagnated and a portion of the population, $P_{r,\text{\%}}$, is randomly reset. This resetting does not affect the particle's knowledge of its
-historical best set of parameters, nor the knowledge of the historically computed global best solution for a given run.\newline
+historical best set of parameters, nor its knowledge of the historically computed global best solution for a given run.\newline
 
 \newpage
