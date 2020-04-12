@@ -9,7 +9,7 @@ particle swarm. Additionally, it necessitates very small absolute and relative t
 components serve to make this problem a suitable benchmark for the performance of different implementations of the particle swarm optimization algorithm. \newline
 
 \noindent To maintain consistency between different implementation targets, the numerical integration algorithm, absolute and relative tolerance values,
-and minimum step size constraints are held constant. All implementations employ a fifth order Runge-Kutta Dormand Prince variable step-size integrator
+and minimum step size constraints are held constant. All implementations employ a fifth order Runge-Kutta Dormand-Prince variable step-size integrator
 throughout both thrust arcs. The tolerances are defined as
 
 \begin{equation}
@@ -56,7 +56,7 @@ functions \code{tic} and \code{toc}.
 \noindent Further analysis of the numerically determined optimal thrust arcs is computed within MATLAB.
 The transfer is broken down into its three distinct components: the first thrust arc, the coasting arc, and the second thrust arc. 
 A set of $r$ and $\theta$ values throughout these three durations are joined together for graphically modeling the given particle's transfer
-solution. Results of these computations can be seen in Fig. (\ref{fig:Tarc-B2}). \newline
+solution. Results of these computations can be seen in Figs. (\ref{fig:Tarc-B2}, \ref{fig:Tarc-B10}). \newline
 
 \subsection{Thrust Angles}
 
@@ -110,7 +110,7 @@ are flattened to their one-dimensional counterparts. The corresponding one-dimen
     \label{eq:index-conversion}
 \end{equation}
 
-\noindent where $r$ is the zero-based two-dimension row number, $y$ the zero-based two-dimensional column number, and $w$ the two-dimensional array width. All flattened one-dimensional arrays are represented with double precision, dynamically allocated, contiguous blocks
+\noindent where $r$ is the zero-based two-dimensional row number, $y$ the zero-based two-dimensional column number, and $w$ the two-dimensional array width. All flattened one-dimensional arrays are represented with double precision, dynamically allocated, contiguous blocks
 of memory. \newline
 
 \noindent
@@ -129,7 +129,7 @@ and microseconds since the Epoch, enabling timing accuracy of up to $10^{-6}$ se
 \section{C++ Parallelization}
 \noindent To reduce complexity and limit memory passing overhead, this thesis employs a shared-memory model of 
 parallelization. In this model, memory is shared between all cores and threads on a singular node.
-Standard C++ provides a POSIX compliant threading system to architecture parallel code with this structure. While this provides 
+Standard C++ provides a POSIX compliant threading system to architecture parallel code with this structure. While this offers 
 the lowest level of program management, its implementation is arduous and error prone. As such, the \code{OpenMP}
 specification for creating parallelized programs is utilized. \newline
 
