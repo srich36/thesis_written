@@ -7,7 +7,8 @@
 
 \section{Numerical Results}
 
-\noindent A particle swarm optimization implementation solutions for the optimal orbital transfer between two concentric circular orbits. Table (\ref{tab:Numerical-Results}) shows
+\noindent Implementation of the particle swarm optimization algorithm provides a way to solve for the optimal 
+orbital transfer between two concentric circular orbits. Table (\ref{tab:Numerical-Results}) shows
 the results of these computations. The ratio $(\frac{m_f}{m_{0}})_h$ represents the final to initial mass
 ratio for a Hohmann transfer between orbits, whereas $\frac{m_f}{m_0}$ is the mass ratio of the algorithm 
 determined optimal solution.
@@ -62,7 +63,7 @@ with increasingly larger $\beta$ values are increasingly elliptical.
 
 \noindent Particle swarm optimization's stochastic nature does not guarantee optimal results every 
 run, nor does it guarantee that particles with similar cost function values represent similar solutions. 
-Fig. (\ref{fig:thrustAnglesB2}) shows the thrust-pointing-angle time histories for both thrust arcs for 
+Fig. (\ref{fig:thrustAnglesB2}) shows the thrust-pointing-angle time histories for 
 different particles with quasi-optimal cost function values. While similar in cost function value, the 
 thrust-pointing-angle histories vary greatly for these parameter sets. Thus, it can be observed that, within a search 
 space of 11 unknowns, near optimal solutions may vary greatly in their characteristics.
@@ -86,7 +87,7 @@ better solution. This notion makes it difficult to discern when a population has
     \end{figure}
 
 \noindent Fig. (\ref{fig:gBestPer500Iter}) showcases the evolution of global best cost function values over a larger 
-range of iterations. This figure reinforces the observations from fig. (\ref{fig:gBestPer500Iter}). The rapid decrease 
+range of iterations. This figure reinforces the observations from Fig. (\ref{fig:gBestPer500Iter}). The rapid decrease 
 in cost function value is generally limited to the beginning iterations, and cost function value
 plateaus in the later stages of the algorithm. One notable portion is the significant decrease in the global best 
 value for run four following over 300 iterations. This event demonstrates the inherent randomness of the particle swarm 
@@ -156,7 +157,7 @@ with lower values of $\delta_{Jcrit}$ perform better.
 
 \noindent Data from Table (\ref{tab:rehydation-p33}) displays results with $P_{r,\text{\%}}$ set to 33\%. These data indicate similarly
 improved algorithm performance for any parameter combination. However, just as in Table (\ref{tab:rehydation-p25}), the best results
-originate from parameter combinations with $\delta_{Jcrit} = .1$.
+originate from parameter combinations with $\delta_{Jcrit} = .1\%$.
 
 \begin{table}[H]
     \centering
@@ -183,7 +184,7 @@ originate from parameter combinations with $\delta_{Jcrit} = .1$.
 $P_{r,\text{\%}}$ maintained at 50\%. Once again, every combination of parameters leads to 
 significant reduction in $\bar{J}_{best}$ relative to the \textit{non-rehydation} algorithm. 
 Within these results it can be observed that higher values of
-$\eta_{iter}$ give the best performance. Unlike Tables (\ref{tab:rehydation-p25}, \ref{tab:rehydation-p33}), 
+$\eta_{iter}$ generally give the best performance. Unlike Tables (\ref{tab:rehydation-p25}, \ref{tab:rehydation-p33}), 
 the value of $\delta_{Jcrit}$ appears to be less correlated to algorithm improvement.
 
 \section{Algorithm Benchmarking}
@@ -316,7 +317,7 @@ greater as $I_{num}$ increases.
 \noindent Table (\ref{tab:OpenMP-speedup}) displays the speedup of the \code{OpenMP} 
 implementation relative to the base C++ and MATLAB versions. At peak efficiency, this implementation
 achieves a 96.49\% speedup at 32.78 times faster than the MATLAB execution. However, under certain
-conditions, the parallelized version of the algorithm is slower than the single threaded version. Analysis 
+conditions, the parallelized version of the algorithm is slower than its single threaded equivalent. Analysis 
 of the data suggests this occurs in cases with a lower $P_{num}$ and higher $I_{num}$. \newline
 
 \noindent The reasoning for this
