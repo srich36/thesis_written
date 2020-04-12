@@ -11,11 +11,11 @@
 \noindent Since its introduction in 1995 by Kennedy and Eberhart \citep{Initial_PSO}, particle swarm optimization has had numerous implications in various aerospace fields and beyond.
 The algorithm was originally designed to simulate social behavior within a flock of birds but has since been adapted as a stochastic solution for problems
 requiring numerical algorithms. Particle swarm optimization consists of a set of possible solutions, referred to as particles, which then explore the solution search space due to
-computed velocity update parameters. The velocity change of each particle per algorithm iteration depends on the three things: the particle's best historical position, the best historical
+computed velocity update parameters. The velocity change of each particle per algorithm iteration depends on three things: the particle's best historical position, the best historical
 solution within the entire solution set (referred to as the swarm), and the particle's current velocity. In forming the algorithm in this way, many particle swarm optimization techniques 
 require no prior knowledge of the solution space and do not necessitate the problem to be differentiable. \newline
 
-\noindent Particle swarm optimization's nature as a metaheuristic algorithm has lent itself to the application of various problems,
+\noindent Particle swarm optimization's metaheuristic nature has lent itself to the application of various problems,
 including structural design optimization, responsive theater maneuvers, corrosion fatigue, and path-constrained minimal time satellite reorientation
 \citep{PSO1, PSO2, PSO3, PSO4}. As a stochastic algorithm, however, a global optimal solution within the search space is not guaranteed for every execution. 
 This requires multiple runs of the algorithm and increased computation. As such, significant effort has been devoted to reducing the computational time for this class of
@@ -24,7 +24,7 @@ effect on computation time \citep{PPSO1, PPSO2, PPSO3}. In addition to algorithm
 This development sought to reduce computational
 burden with the finer grain memory control synonymous with lower-level programming languages. \newline
 
-\noindent One caveat of particle swarm optimization algorithms is stagnation: a condition in which the swarm converges to a non-optimal solution. The attempt to maintain population 
+\noindent One caveat of particle swarm optimization algorithms is premature stagnation: a condition in which the swarm converges to a non-optimal solution. The attempt to maintain population 
 diversity has been a research area of interest and has seen various approaches in stagnation determination and correction \citep{PSOstag1, PSOstag2}. This thesis introduces a new concept,
 dubbed \textit{rehydration}, in which a portion of the population is randomly reset when the population meets the specified stagnation criteria. Analysis of the effect of this
 \textit{rehydration} on the search for an optimal solution is explored and presented.
