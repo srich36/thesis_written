@@ -9,15 +9,19 @@
 \chapter*{Abstract} % make this a \chapter* to not include it in the table of contents
 
 \noindent Particle swarm optimization has developed as a popular method of solution 
-discovery for many numerical problems. The finite thrust transfer problem employs
-this metaheuristic algorithm for trajectory optimization.  This method is computationally expensive and requires
+discovery for many numerical problems. Yet, these methods are computationally expensive and require
 numerous runs to confidently discover a quasi-optimal solution. These major bottlenecks - execution time and 
-a low probability of optimal solution convergence - make real-time, on-board calculations utilizing this algorithm 
-impractical. \newline
+a low probability of optimal solution convergence - restrict the usage of particle swarm methods for time-sensitive calculations. 
+In an exploration of the finite thrust arc problem as a benchmark case, this paper analyzes particle swarm
+optimization improvements in an effort to broaden the algorithm's utility.\newline
 
-\noindent The research presented within this thesis studies two methods to significantly improve each of these bottlenecks.
-This thesis develops results that show increased algorithm performance of well over an order of magnitude, and demonstrably
-improves the average solution discovered. In employing these two methods in concert, this
-research suggests the potential feasibility of real-time particle swarm optimization techniques.\newline
+\noindent The research presented within this thesis studies two methods to significantly improve each of the major particle swarm bottlenecks.
+First, reducing execution time is explored through various means of problem implementation. 
+Memory-optimized single-threaded and parallelized C++ algorithms
+are found to perform up to 96\% faster then MATLAB. 
+Second, minimizing premature convergence is studied with \textit{rehydration} - a proposed method of resetting a portion of the
+swarm under population stagnation. 
+\textit{Rehydration} results demonstrate up to a 44\% improvement in average solution discovery. In employing these two methods in concert, this
+research suggests the potential feasibility of reliable, real-time particle swarm optimization techniques.\newline
 
 \cleardoublepage
