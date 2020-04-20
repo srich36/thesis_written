@@ -5,18 +5,13 @@
 \chapter{Conclusions and Recommendations for Future Work}
 
 \section{Conclusions}
-\noindent The finite thrust transfer problem models orbital transfers without
-impulsive velocity change assumptions. As such, it provides higher fidelity
-solutions for minimum propellant consumption maneuvers. An analysis of this problem
-can direct thrust angles on a currently orbiting spacecraft throughout the transfer arc.
-However, this algorithm requires significant time to confidently discover a quasi-optimal 
-solution. In many cases, the necessity of determining optimal transfer parameters has minimal
-advanced notice.
-Thus, reducing the algorithm runtime and increasing the probability of optimal 
-solution discovery is fundamental to enabling time-sensitive results. Significant improvements
-in these bottlenecks could potentially enable on-board computers to calculate these transfer 
-parameters autonomously. This thesis explores improvements to both of these barriers through algorithm 
-benchmarking and a swarm stagnation prevention technique deemed \textit{rehydration}. \newline
+\noindent
+Many particle swarm optimization methods
+require significant time for algorithm execution and solution convergence. Furthermore, the probabilistic nature of stochastic methods necessitate aggregating multiple
+algorithm runs for confidence in a quasi-optimal solution discovery. Improving these two major bottlenecks - long algorithm
+runtimes and the realiability of a given algorithm execution - comprise the majority of this thesis' focus. 
+To benchmark proposed improvements, the finite thrust arc problem was selected as an apt test case
+for its computational complexity and non-trivial implementation. \newline
 
 \noindent While the particle swarm optimization algorithm runtime is inherently constrained by the 
 calculations it entails, optimizing memory transfer, caching, and computation can potentially speed up its
@@ -33,14 +28,21 @@ similar C++ implementations in the future. \newline
 
 \noindent The second problem this paper evaluates is increasing the probability of quasi-optimal solution 
 discovery. As a stochastic algorithm, particle swarm optimization is prone to swarm stagnation, where the 
-population prematurely converges on a non-optimal solution. \textit{Rehydration} is an attempt 
-to rectify this behavior, resetting some of the population upon stagnation determination to inject more randomness
-into the algorithm. \textit{Rehydration} results are tabulated for a series of the method's core parameters: $P_{r,\%}$,
+population prematurely converges on a non-optimal solution. This thesis' proposal of \textit{rehydration}
+- the process of randomly resetting some of the population upon stagnation determination - is an attempt 
+to rectify this behavior. \textit{Rehydration} results are tabulated for a series of the method's core parameters: $P_{r,\%}$,
 $\delta_{Jcrit}$, $\eta_{iter}$, and compared against the average of 300 runs sans the reset technique. For each 
-parameter combination, the \textit{rehydration} algorithm demonstrably improved the average solution discovered.
+parameter combination, the \textit{rehydration} algorithm demonstrably improved the average solution discovered, peaking 
+at an over 48\% efficiency increase.
 This indicates that this method can improve the probability of quasi-optimal solution discovery, thus reducing the 
 amount of algorithm runs necessary to find optimal transfer parameters. In combination with C++ implementations, this significantly 
-improves the two bottlenecks preventing real-time trajectory optimization.
+improves the two bottlenecks preventing real-time trajectory optimization. \newline
+
+\noindent While this paper focuses on the finite thrust arc problem as a test case, the proposed particle swarm optimization 
+improvements extend beyond any one problem definition. Decreased runtime and increased reliability help
+unlock particle swarm methods in scenarios requiring time-sensitive results. For the finite thrust arc, this may mean enabling 
+on-board computers to calculate real-time transfer parameters autonomously. Yet, the benefits transcend this case,
+extending to any problem domain utilizing particle swarm methods. \newline
 
 \section{Recommendations For Future Work}
 
